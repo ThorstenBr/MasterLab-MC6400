@@ -109,6 +109,13 @@ function getInstruction(adr, with_machine_code)
 			}
 		}
 		else
+		if (s.endsWith(",XX"))
+		{
+			// direct addressing to $FFxx address range
+			var Addr = mr8(adr+1);
+			s = s.replace("XX", "FF"+hex8(Addr));
+		}
+		else
 		{
 			var Addr = mr8(adr+1);
 			s = s.replace("XX", hex8(Addr));
