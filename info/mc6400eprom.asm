@@ -157,25 +157,25 @@
 00B3: 46       LD P2,EA      
 00B4: C2 00    LD A,00,P2    
 00B6: CD DA    ST A,$FFDA    
-00B8: 20 0B 01 JSR $010C      
+00B8: 20 0B 01 JSR $010C     
 00BB: 10       CALL 0        ; CALL ANZ_EIN/DISP_INPUT
 00BC: 74 B5    BRA $0073     ; RETURNS HERE: FUNCTION KEY PRESSED
 00BE: CD DE    ST A,$FFDE    ; RETURNS HERE: ALPHANUM KEY PRESSED
 00C0: C4 04    LD A,=04      
-00C2: CD D5    ST A,$FFD5       
-00C4: 95 DB    ILD A,$FFDB      
+00C2: CD D5    ST A,$FFD5    
+00C4: 95 DB    ILD A,$FFDB   
 00C6: 7C 04    BNZ $00CC      
 00C8: C4 00    LD A,=00      
-00CA: CD DA    ST A,$FFDA       
-00CC: C5 DA    LD A,$FFDA       
-00CE: F5 DA    ADD A,$FFDA      
-00D0: CD DA    ST A,$FFDA       
-00D2: 9D D5    DLD A,$FFD5      
+00CA: CD DA    ST A,$FFDA    
+00CC: C5 DA    LD A,$FFDA    
+00CE: F5 DA    ADD A,$FFDA   
+00D0: CD DA    ST A,$FFDA    
+00D2: 9D D5    DLD A,$FFD5   
 00D4: 7C F6    BNZ $00CC      
-00D6: C5 DE    LD A,$FFDE       
-00D8: DD DA    OR A,$FFDA       
-00DA: CD DA    ST A,$FFDA       
-00DC: 74 8C    BRA $006A      
+00D6: C5 DE    LD A,$FFDE    
+00D8: DD DA    OR A,$FFDA    
+00DA: CD DA    ST A,$FFDA    
+00DC: 74 8C    BRA $006A     
 
 ; 7-SEGMENT SYMBOL TABLE
 00DE: 7E       DB $7E        ; 7-SEGMENT SYMBOL "0"
@@ -231,6 +231,9 @@
 012A: CD C1    ST A,$FFC1    
 
 ; CALL 4 ENTRY: UEB_4L
+; CONVERTS DATA FROM $FFD8/$FFD9 TO DECIMAL
+; AND OUTPUTS TO THE 4 LEFT MOST DIGITS.
+; THE 4 DIGITS TO THE RIGHT NOT AFFECTED.
 012C: 84 00 00 LD EA,=0000   
 012F: C5 D9    LD A,$FFD9    
 0131: D4 0F    AND A,=0F     
@@ -383,42 +386,42 @@
 0215: E4 06    XOR A,=06     
 0217: 7C F6    BNZ $020F     
 0219: 01       XCH A,E       
-021A: C5 DF    LD A,DF       
+021A: C5 DF    LD A,$FFDF    
 021C: D4 03    AND A,=03     
 021E: B4 D1 FF ADD EA,=FFD1  
 0221: 47       LD P3,EA      
-0222: C5 D8    LD A,D8       
+0222: C5 D8    LD A,$FFD8    
 0224: CB 00    ST A,00,P3    
-0226: 74 11    BRA $0239      
+0226: 74 11    BRA $0239     
 0228: E4 06    XOR A,=06     
-022A: 7C E3    BNZ $020F      
+022A: 7C E3    BNZ $020F     
 022C: 01       XCH A,E       
-022D: C5 DF    LD A,DF       
-022F: F5 DF    ADD A,DF      
+022D: C5 DF    LD A,$FFDF    
+022F: F5 DF    ADD A,$FFDF   
 0231: B4 C8 FF ADD EA,=FFC8  
 0234: 47       LD P3,EA      
-0235: 85 D8    LD EA,D8      
+0235: 85 D8    LD EA,$FFD8   
 0237: 8B 00    ST EA,00,P3   
-0239: 74 13    BRA $024E      
-023B: 24 AE 02 JMP $02AF      
-023E: C5 D3    LD A,D3       
-0240: CD D8    ST A,D8       
+0239: 74 13    BRA $024E     
+023B: 24 AE 02 JMP $02AF     
+023E: C5 D3    LD A,$FFD3    
+0240: CD D8    ST A,$FFD8    
 0242: C4 EF    LD A,=EF      
 0244: 74 37    BRA $027D      
-0246: C5 D4    LD A,D4       
-0248: CD D8    ST A,D8       
+0246: C5 D4    LD A,$FFD4    
+0248: CD D8    ST A,$FFD8    
 024A: C4 F3    LD A,=F3      
-024C: 74 2F    BRA $027D      
+024C: 74 2F    BRA $027D     
 024E: 26 DD 09 LD P2,=09DD   ; 7SEGMENT DATA "CPU?"
 0251: 20 2E 09 JSR $092F     ; WRITE DISPLAY BUFFER
 0254: 10       CALL 0        ; CALL ANZ_EIN
 0255: 74 B8    BRA $020F     ; RETURNS HERE: FUNCTION KEY PRESSED
-0257: CD DF    ST A,DF       ; RETURNS HERE: ALPHANUM KEY PRESSED
+0257: CD DF    ST A,$FFDF    ; RETURNS HERE: ALPHANUM KEY PRESSED
 0259: 6C 40    BZ $029B      
 025B: E4 01    XOR A,=01     
 025D: 6C 6C    BZ $02CB      
 025F: E4 03    XOR A,=03     
-0261: 6C 58    BZ $02BB       
+0261: 6C 58    BZ $02BB      
 0263: E4 01    XOR A,=01     
 0265: 6C 5C    BZ $02C3      
 0267: E4 07    XOR A,=07     
@@ -429,74 +432,74 @@
 0271: 6C CB    BZ $023E      
 0273: E4 03    XOR A,=03     
 0275: 7C D7    BNZ $024E     
-0277: C5 D2    LD A,D2       
-0279: CD D8    ST A,D8       
+0277: C5 D2    LD A,$FFD2    
+0279: CD D8    ST A,$FFD8    
 027B: C4 DB    LD A,=DB      
-027D: CD C0    ST A,C0       
+027D: CD C0    ST A,$FFC0    
 027F: C4 00    LD A,=00      
-0281: CD C1    ST A,C1       
-0283: CD C6    ST A,C6       
-0285: CD C7    ST A,C7       
+0281: CD C1    ST A,$FFC1    
+0283: CD C6    ST A,$FFC6    
+0285: CD C7    ST A,$FFC7    
 0287: C4 A0    LD A,=A0      
-0289: CD C2    ST A,C2       
+0289: CD C2    ST A,$FFC2    
 028B: C4 FF    LD A,=FF      
-028D: CD DB    ST A,DB       
+028D: CD DB    ST A,$FFDB    
 028F: 15       CALL 5        ; CALL UEB_2
 0290: 10       CALL 0        ; CALL ANZ_EIN
 0291: 74 05    BRA $0298     ; RETURNS HERE: FUNCTION KEY PRESSED
 0293: 20 ED 00 JSR $00EE     ; RETURNS HERE: ALPHANUM KEY PRESSED
 0296: 74 F7    BRA $028F     
 0298: 24 14 02 JMP $0215     
-029B: 85 C8    LD EA,C8      
-029D: 8D D8    ST EA,D8      
+029B: 85 C8    LD EA,$FFC8   
+029D: 8D D8    ST EA,$FFD8   
 029F: C4 72    LD A,=72      
-02A1: CD C0    ST A,C0       
+02A1: CD C0    ST A,$FFC0    
 02A3: C4 E6    LD A,=E6      
-02A5: CD C1    ST A,C1       
+02A5: CD C1    ST A,$FFC1    
 02A7: C4 A0    LD A,=A0      
-02A9: CD C2    ST A,C2       
+02A9: CD C2    ST A,$FFC2    
 02AB: C4 FF    LD A,=FF      
-02AD: CD DB    ST A,DB       
+02AD: CD DB    ST A,$FFDB    
 02AF: 14       CALL 4        ; CALL UEB_4L
 02B0: 10       CALL 0        ; CALL ANZ_EIN
 02B1: 74 05    BRA $02B8     ; RETURNS HERE: FUNCTION KEY PRESSED
 02B3: 20 ED 00 JSR $00EE     ; RETURNS HERE: ALPHANUM KEY PRESSED
-02B6: 74 F7    BRA $02AF      
-02B8: 24 27 02 JMP $0228      
-02BB: 85 CC    LD EA,CC      
-02BD: 8D D8    ST EA,D8      
+02B6: 74 F7    BRA $02AF     
+02B8: 24 27 02 JMP $0228     
+02BB: 85 CC    LD EA,$FFCC   
+02BD: 8D D8    ST EA,$FFD8   
 02BF: C4 B7    LD A,=B7      
 02C1: 74 DE    BRA $02A1     
-02C3: 85 CE    LD EA,CE      
-02C5: 8D D8    ST EA,D8      
+02C3: 85 CE    LD EA,$FFCE   
+02C5: 8D D8    ST EA,$FFD8   
 02C7: C4 9F    LD A,=9F      
 02C9: 74 D6    BRA $02A1      
-02CB: 85 CA    LD EA,CA      
-02CD: 8D D8    ST EA,D8      
+02CB: 85 CA    LD EA,$FFCA   
+02CD: 8D D8    ST EA,$FFD8   
 02CF: C4 DB    LD A,=DB      
-02D1: CD C1    ST A,C1       
+02D1: CD C1    ST A,$FFC1    
 02D3: C4 E6    LD A,=E6      
-02D5: CD C0    ST A,C0       
-02D7: 74 CE    BRA $02A7      
-02D9: 85 D0    LD EA,$FFD0      
-02DB: 8D D8    ST EA,D8      
+02D5: CD C0    ST A,$FFC0    
+02D7: 74 CE    BRA $02A7     
+02D9: 85 D0    LD EA,$FFD0   
+02DB: 8D D8    ST EA,$FFD8   
 02DD: C4 00    LD A,=00      
-02DF: CD C1    ST A,C1       
+02DF: CD C1    ST A,$FFC1    
 02E1: C4 F0    LD A,=F0      
-02E3: CD C0    ST A,C0       
-02E5: 74 C0    BRA $02A7      
+02E3: CD C0    ST A,$FFC0    
+02E5: 74 C0    BRA $02A7     
 
 ; CALL F ENTRY: HALT
 02E7: 20 67 09 JSR $0968     ; SAVE CPU REGISTERS TO RAM
 02EA: 3A       POP EA        
 02EB: B4 01 00 ADD EA,=0001  
-02EE: 74 04    BRA $02F4      
+02EE: 74 04    BRA $02F4     
 
 ; CALL E ENTRY: TEST
 02F0: 20 67 09 JSR $0968     ; SAVE CPU REGISTERS TO RAM
 02F3: 3A       POP EA       
-02F4: 8D C8    ST EA,C8     
-02F6: 8D D8    ST EA,D8     
+02F4: 8D C8    ST EA,$FFC8  
+02F6: 8D D8    ST EA,$FFD8  
 02F8: 24 A8 00 JMP $00A9    
 
 02FB: E4 07    XOR A,=07     ; A=7?
@@ -514,7 +517,7 @@
 0312: C4 A0    LD A,=A0      
 0314: CD C2    ST A,$FFC2    
 0316: C4 FF    LD A,=FF      
-0318: CD DB    ST A,DB       
+0318: CD DB    ST A,$FFDB    
 031A: 5C       RET           
 
 031B: 20 09 03 JSR $030A     
@@ -525,8 +528,8 @@
 0325: 74 F7    BRA $031E     
 0327: E4 04    XOR A,=04     
 0329: 7C F3    BNZ $031E     
-032B: 85 D8    LD EA,D8      
-032D: 8D E0    ST EA,E0      
+032B: 85 D8    LD EA,$FFD8   
+032D: 8D E0    ST EA,$FFE0   
 032F: C4 F3    LD A,=F3      
 0331: 20 0B 03 JSR $030C     
 0334: 14       CALL 4        ; CALL UEB_4L
@@ -536,8 +539,8 @@
 033B: 74 F7    BRA $0334     
 033D: E4 04    XOR A,=04     
 033F: 7C F3    BNZ $0334     
-0341: 85 D8    LD EA,D8      
-0343: 8D E2    ST EA,E2      
+0341: 85 D8    LD EA,$FFD8   
+0343: 8D E2    ST EA,$FFE2   
 0345: C4 00    LD A,=00      
 0347: CB 0A    ST A,0A,P3    
 0349: 20 EA 06 JSR $06EB      
@@ -551,12 +554,12 @@
 035B: E4 05    XOR A,=05     
 035D: 7C F3    BNZ $0352      
 035F: CB 0A    ST A,0A,P3    
-0361: 85 D8    LD EA,$FFD8      
-0363: 8D E0    ST EA,$FFE0      
-0365: 20 C0 07 JSR $07C1      
-0368: C5 D8    LD A,D8       
-036A: 7C 2C    BNZ $0398      
-036C: 24 52 00 JMP $0053      
+0361: 85 D8    LD EA,$FFD8   
+0363: 8D E0    ST EA,$FFE0   
+0365: 20 C0 07 JSR $07C1     
+0368: C5 D8    LD A,$FFD8    
+036A: 7C 2C    BNZ $0398     
+036C: 24 52 00 JMP $0053     
 
 036F: 26 E5 09 LD P2,=09E5   ; 7SEGMENT DATA: " SPIELE"
 0372: 20 2E 09 JSR $092F     ; WRITE DISPLAY BUFFER
@@ -564,25 +567,25 @@
 0376: 74 F7    BRA $036F     ; RETURNS HERE: FUNCTION KEY PRESSED
 0378: 7C 2C    BNZ $03A6     ; RETURNS HERE: FUNCTION KEY PRESSED
 037A: 84 E5 09 LD EA,=09E5   ; 7SEGMENT DATA: " SPIELE"
-037D: 8D D8    ST EA,D8      
+037D: 8D D8    ST EA,$FFD8   
 037F: 84 F6 09 LD EA,=09F6   ; 7SEGMENT DATA: "  SPIELE"
-0382: BD D8    SUB EA,$FFD8     
-0384: 64 02    BP $0388       
-0386: 74 F2    BRA $037A      
-0388: 85 D8    LD EA,$FFD8      
+0382: BD D8    SUB EA,$FFD8  
+0384: 64 02    BP $0388      
+0386: 74 F2    BRA $037A     
+0388: 85 D8    LD EA,$FFD8   
 038A: B4 01 00 ADD EA,=0001  
-038D: 8D D8    ST EA,$FFD8      
+038D: 8D D8    ST EA,$FFD8   
 038F: 4E       XCH EA,P2     
 0390: 20 2E 09 JSR $092F     ; WRITE DISPLAY BUFFER
 0393: C4 40    LD A,=40      
 0395: 11       CALL 1        ; CALL ANZEIGE
-0396: 74 E7    BRA $037F      
+0396: 74 E7    BRA $037F     
 0398: 26 D5 09 LD P2,=09D5   ; 7SEGMENT DATA: "Error"
 039B: 20 2E 09 JSR $092F     ; WRITE DISPLAY BUFFER
 039E: 10       CALL 0        ; CALL ANZ_EIN
 039F: 74 02    BRA $03A3     ; RETURNS HERE: FUNCTION KEY PRESSED
 03A1: 74 F5    BRA $0398     ; RETURNS HERE: FUNCTION KEY PRESSED
-03A3: 24 E7 01 JMP $01E8      
+03A3: 24 E7 01 JMP $01E8     
 
 03A6: E4 01    XOR A,=01     ; A=1?
 03A8: 7C 1E    BNZ $03C8     ; BRANCH OTHERWISE
@@ -620,7 +623,7 @@
 03D2: 07       LD S,A        
 03D3: 84 00 00 LD EA,=0000   
 03D6: 1D       CALL D        ; CALL VERZ/DELAY
-03D7: 74 F6    BRA $03CF      
+03D7: 74 F6    BRA $03CF     
 
 03D9: E4 01    XOR A,=01     ; A="3"? (A^2)
 03DB: 7C 24    BNZ $0401     ; BRANCH OTHERWISE
@@ -642,7 +645,7 @@
 03F5: 1D       CALL D        ; CALL VERZ/DELAY
 03F6: 38       POP A         
 03F7: 07       LD S,A        
-03F8: 74 EF    BRA $03E9      
+03F8: 74 EF    BRA $03E9     
 03FA: 84 00 00 LD EA,=0000   
 03FD: 1D       CALL D        ; CALL VERZ/DELAY
 03FE: 1D       CALL D        ; CALL VERZ/DELAY
@@ -652,22 +655,22 @@
 0403: 7C 1F    BNZ $0424     ; BRANCH OTHERWISE
 
 0405: 84 FF 00 LD EA,=00FF   ; PROGRAM 4: DECIMAL/BINARY NUMBERS
-0408: 8D D3    ST EA,D3      
-040A: 95 D3    ILD A,D3      
+0408: 8D D3    ST EA,$FFD3   
+040A: 95 D3    ILD A,$FFD3   
 040C: E4 10    XOR A,=10     
 040E: 7C 05    BNZ $0415     
 0410: 06       LD A,S        
 0411: D4 10    AND A,=10     
-0413: 6C F0    BZ $0405       
-0415: 85 D3    LD EA,D3      
+0413: 6C F0    BZ $0405      
+0415: 85 D3    LD EA,$FFD3   
 0417: 1C       CALL C        ; CALL HEX_DEC
-0418: 8D D8    ST EA,D8      
+0418: 8D D8    ST EA,$FFD8   
 041A: 13       CALL 3        ; CALL UEB_4R
-041B: C5 D3    LD A,D3       
-041D: CD C3    ST A,C3       
+041B: C5 D3    LD A,$FFD3    
+041D: CD C3    ST A,$FFC3    
 041F: C4 00    LD A,=00      
 0421: 11       CALL 1        ; CALL ANZEIGE
-0422: 74 E6    BRA $040A      
+0422: 74 E6    BRA $040A     
 
 0424: E4 01    XOR A,=01     ; A="5"? (A^4)
 0426: 7C 26    BNZ $044E     ; BRANCH OTHERWISE
@@ -708,15 +711,15 @@
 0468: 20 72 04 JSR 0473      
 046B: 95 DD    ILD A,$FFDD   
 046D: E4 30    XOR A,=30     
-046F: 7C F3    BNZ $0464      
-0471: 74 DF    BRA $0452      
+046F: 7C F3    BNZ $0464     
+0471: 74 DF    BRA $0452     
 0473: 06       LD A,S        
 0474: E4 0E    XOR A,=0E     
 0476: 07       LD S,A        
 0477: 85 DD    LD EA,$FFDD   
 0479: 1D       CALL D        ; CALL VERZ/DELAY
 047A: 9D D5    DLD A,$FFD5   
-047C: 7C F5    BNZ $0473      
+047C: 7C F5    BNZ $0473     
 047E: 5C       RET           
 
 047F: E4 01    XOR A,=01     ; A?? (A^)
@@ -736,119 +739,119 @@
 049C: 1D       CALL D        ; CALL VERZ/DELAY
 049D: 06       LD A,S        
 049E: D4 20    AND A,=20     
-04A0: 6C E7    BZ $0489       
+04A0: 6C E7    BZ $0489      
 04A2: 27 DE 00 LD P3,=00DE   ; LOAD 7SEGMENT-SYMBOL TABLE OFFSET
 04A5: C4 06    LD A,=06      
-04A7: CD D5    ST A,D5       
+04A7: CD D5    ST A,$FFD5    
 04A9: C4 55    LD A,=55      
 04AB: CA 00    ST A,00,P2    
 04AD: C4 A7    LD A,=A7      
 04AF: CA 10    ST A,10,P2    
 04B1: 06       LD A,S        
 04B2: D4 20    AND A,=20     
-04B4: 6C D3    BZ $0489       
+04B4: 6C D3    BZ $0489      
 04B6: C7 01    LD A,@+1,P3   
-04B8: 9D D5    DLD A,D5      
-04BA: 7C ED    BNZ $04A9      
-04BC: 74 E4    BRA $04A2      
+04B8: 9D D5    DLD A,$FFD5   
+04BA: 7C ED    BNZ $04A9     
+04BC: 74 E4    BRA $04A2     
 
 04BE: E4 0F    XOR A,=0F     ; A=8 (A^7)
 04C0: 7C 68    BNZ $052A     ; BRANCH OTHERWISE
 
 04C2: 84 00 00 LD EA,=0000   ; PROGRAM 8: "6 AUS 49"
-04C5: 8D E4    ST EA,E4      
-04C7: 8D E6    ST EA,E6      
-04C9: 8D E8    ST EA,E8      
+04C5: 8D E4    ST EA,$FFE4   
+04C7: 8D E6    ST EA,$FFE6   
+04C9: 8D E8    ST EA,$FFE8   
 04CB: C4 06    LD A,=06      
-04CD: CD EB    ST A,EB       
+04CD: CD EB    ST A,$FFEB    
 04CF: 26 E4 FF LD P2,=FFE4   
 04D2: 56       PUSH P2       
 04D3: 26 CD 09 LD P2,=09CD   ; 7SEGMENT DATA: "6 AUS 49"
 04D6: 20 2E 09 JSR $092F     ; WRITE DISPLAY BUFFER
 04D9: C4 08    LD A,=08      
 04DB: 11       CALL 1        ; CALL ANZEIGE
-04DC: C5 EB    LD A,EB       
-04DE: 6C F3    BZ $04D3       
-04E0: 20 CE 06 JSR $06CF      
-04E3: CD EA    ST A,$FFEA       
+04DC: C5 EB    LD A,$FFEB    
+04DE: 6C F3    BZ $04D3      
+04E0: 20 CE 06 JSR $06CF     
+04E3: CD EA    ST A,$FFEA    
 04E5: 06       LD A,S        
 04E6: D4 10    AND A,=10     
-04E8: 6C E9    BZ $04D3       
+04E8: 6C E9    BZ $04D3      
 04EA: 12       CALL 2        ; CALL BLANK
 04EB: C4 02    LD A,=02      
 04ED: 11       CALL 1        ; CALL ANZEIGE
 04EE: 5E       POP P2        
 04EF: 06       LD A,S        
 04F0: D4 10    AND A,=10     
-04F2: 7C FB    BNZ $04EF      
-04F4: 85 E9    LD EA,E9      
+04F2: 7C FB    BNZ $04EF     
+04F4: 85 E9    LD EA,$FFE9   
 04F6: 01       XCH A,E       
 04F7: D4 3F    AND A,=3F     
 04F9: 1C       CALL C        ; CALL HEX_DEC
-04FA: CD EA    ST A,$FFEA       
+04FA: CD EA    ST A,$FFEA    
 04FC: FC 50    SUB A,=50     
 04FE: 06       LD A,S        
 04FF: D4 80    AND A,=80     
-0501: 6C 07    BZ $050A       
-0503: 20 CE 06 JSR $06CF      
-0506: CD EA    ST A,$FFEA       
-0508: 74 EA    BRA $04F4      
+0501: 6C 07    BZ $050A      
+0503: 20 CE 06 JSR $06CF     
+0506: CD EA    ST A,$FFEA    
+0508: 74 EA    BRA $04F4     
 050A: C4 06    LD A,=06      
-050C: CD EC    ST A,EC       
+050C: CD EC    ST A,$FFEC    
 050E: 27 E4 FF LD P3,=FFE4   
-0511: C5 EA    LD A,$FFEA       
+0511: C5 EA    LD A,$FFEA    
 0513: E7 01    XOR A,@+1,P3  
-0515: 6C EC    BZ $0503       
-0517: 9D EC    DLD A,$FFEC      
-0519: 7C F6    BNZ $0511      
-051B: C5 EA    LD A,$FFEA       
+0515: 6C EC    BZ $0503      
+0517: 9D EC    DLD A,$FFEC   
+0519: 7C F6    BNZ $0511     
+051B: C5 EA    LD A,$FFEA    
 051D: CE 01    ST A,@+1,P2   
 051F: 56       PUSH P2       
-0520: 8D D8    ST EA,D8      
+0520: 8D D8    ST EA,$FFD8   
 0522: 15       CALL 5        ; CALL UEB_2
 0523: 11       CALL 1        ; CALL ANZEIGE
 0524: 11       CALL 1        ; CALL ANZEIGE
 0525: 5E       POP P2        
-0526: 9D EB    DLD A,$FFEB      
-0528: 74 A8    BRA $04D2      
+0526: 9D EB    DLD A,$FFEB   
+0528: 74 A8    BRA $04D2     
 
 052A: E4 01    XOR A,=01     ; A=? (A^8)
 052C: 7C 46    BNZ $0574     ; BRANCH OTHERWISE
 
 052E: 84 00 00 LD EA,=0000   ; PROGRAM 9: POWER OF 2
-0531: 8D E4    ST EA,E4      
-0533: 8D E6    ST EA,E6      
-0535: 95 E4    ILD A,E4      
-0537: 20 52 05 JSR $0553      
-053A: 85 E4    LD EA,E4      
+0531: 8D E4    ST EA,$FFE4   
+0533: 8D E6    ST EA,$FFE6   
+0535: 95 E4    ILD A,$FFE4   
+0537: 20 52 05 JSR $0553     
+053A: 85 E4    LD EA,$FFE4   
 053C: 0F       SL EA         
-053D: 8D E4    ST EA,E4      
-053F: 95 E6    ILD A,E6      
+053D: 8D E4    ST EA,$FFE4   
+053F: 95 E6    ILD A,$FFE6   
 0541: E4 0D    XOR A,=0D     
-0543: 7C F2    BNZ $0537      
-0545: 20 52 05 JSR $0553      
-0548: 85 E4    LD EA,E4      
+0543: 7C F2    BNZ $0537     
+0545: 20 52 05 JSR $0553     
+0548: 85 E4    LD EA,$FFE4   
 054A: 0C       SR EA         
-054B: 8D E4    ST EA,E4      
-054D: 9D E6    DLD A,E6      
-054F: 7C F4    BNZ $0545      
-0551: 74 E4    BRA $0537      
-0553: 85 E4    LD EA,E4      
+054B: 8D E4    ST EA,$FFE4   
+054D: 9D E6    DLD A,$FFE6   
+054F: 7C F4    BNZ $0545     
+0551: 74 E4    BRA $0537     
+0553: 85 E4    LD EA,$FFE4   
 0555: 1C       CALL C        ; CALL HEX_DEC
-0556: 8D D8    ST EA,D8      
+0556: 8D D8    ST EA,$FFD8   
 0558: 13       CALL 3        ; CALL UEB_4R
-0559: 85 E6    LD EA,E6      
+0559: 85 E6    LD EA,$FFE6   
 055B: 1C       CALL C        ; CALL HEX_DEC
 055C: 01       XCH A,E       
-055D: 8D D8    ST EA,D8      
+055D: 8D D8    ST EA,$FFD8   
 055F: 14       CALL 4        ; CALL UEB_4L
 0560: 84 00 00 LD EA,=0000   
-0563: 8D C4    ST EA,C4      
-0565: C5 C7    LD A,C7       
+0563: 8D C4    ST EA,$FFC4   
+0565: C5 C7    LD A,$FFC7    
 0567: E4 7E    XOR A,=7E     
-0569: 7C 04    BNZ $056F      
+0569: 7C 04    BNZ $056F     
 056B: C4 00    LD A,=00      
-056D: CD C7    ST A,C7       
+056D: CD C7    ST A,$FFC7    
 056F: C4 00    LD A,=00      
 0571: 11       CALL 1        ; CALL ANZEIGE
 0572: 11       CALL 1        ; CALL ANZEIGE
@@ -858,164 +861,164 @@
 0576: 6C 03    BZ $057B      ; BRANCH WHEN TRUE
 0578: 24 64 06 JMP $0665     ; JUMP OTHERWISE
 
-057B: 84 00 00 LD EA,=0000   ; PROGRAM A? CALCULATOR
-057E: 8D E4    ST EA,$FFE4      
-0580: 8D E6    ST EA,$FFE6      
+057B: 84 00 00 LD EA,=0000   ; PROGRAM A: CALCULATOR
+057E: 8D E4    ST EA,$FFE4   
+0580: 8D E6    ST EA,$FFE6   
 0582: 17       CALL 7        ; CALL EIN_4ST
-0583: CD E4    ST A,$FFE4       
+0583: CD E4    ST A,$FFE4    
 0585: C4 04    LD A,=04      
-0587: CD E1    ST A,$FFE1       
-0589: 85 D8    LD EA,$FFD8      
-058B: 8D DA    ST EA,$FFDA      
+0587: CD E1    ST A,$FFE1    
+0589: 85 D8    LD EA,$FFD8   
+058B: 8D DA    ST EA,$FFDA   
 058D: D4 0F    AND A,=0F     
-058F: FC 0A    SUB A,=0A     
-0591: 06       LD A,S        
-0592: D4 80    AND A,=80     
-0594: 6C 01    BZ $0597       
-0596: 1A       CALL A        ; CALL FEHLER/ERROR
-0597: 9D E1    DLD A,$FFE1      
-0599: 6C 0A    BZ $05A5       
-059B: 85 DA    LD EA,$FFDA      
+058F: FC 0A    SUB A,=0A     ; CHECK IF ENTERED DIGIT >= 10
+0591: 06       LD A,S        ; GET STATUS REGISTER
+0592: D4 80    AND A,=80     ; CHECK CARRY FLAG
+0594: 6C 01    BZ $0597      ; NOT SET: OK, DIGIT 0-9
+0596: 1A       CALL A        ; OTHERWISE CALL FEHLER/ERROR: BAD INPUT
+0597: 9D E1    DLD A,$FFE1   
+0599: 6C 0A    BZ $05A5      
+059B: 85 DA    LD EA,$FFDA   
 059D: 0C       SR EA         
 059E: 0C       SR EA         
 059F: 0C       SR EA         
 05A0: 0C       SR EA         
-05A1: 8D DA    ST EA,$FFDA      
-05A3: 74 E8    BRA $058D      
-05A5: C5 E4    LD A,$FFSE4       
+05A1: 8D DA    ST EA,$FFDA   
+05A3: 74 E8    BRA $058D     
+05A5: C5 E4    LD A,$FFSE4   
 05A7: E4 01    XOR A,=01     
-05A9: 6C D0    BZ $057B       
+05A9: 6C D0    BZ $057B      
 05AB: E4 05    XOR A,=05     
-05AD: 7C 08    BNZ $05B7      
-05AF: C5 E6    LD A,$FFE6       
+05AD: 7C 08    BNZ $05B7     
+05AF: C5 E6    LD A,$FFE6    
 05B1: E4 80    XOR A,=80     
-05B3: CD E6    ST A,$FFE6       
-05B5: 74 09    BRA $05C0      
-05B7: C5 E5    LD A,$FFE5       
-05B9: 7C 34    BNZ $05EF      
-05BB: 85 D8    LD EA,$FFD8      
+05B3: CD E6    ST A,$FFE6    
+05B5: 74 09    BRA $05C0     
+05B7: C5 E5    LD A,$FFE5    
+05B9: 7C 34    BNZ $05EF     
+05BB: 85 D8    LD EA,$FFD8   
 05BD: 1B       CALL B        ; CALL DEZ_HEX
-05BE: 8D E2    ST EA,$FFE2      
+05BE: 8D E2    ST EA,$FFE2   
 05C0: 13       CALL 3        ; CALL UEB_4R
-05C1: C5 E6    LD A,$FFE6       
-05C3: CD C4    ST A,C4       
-05C5: C5 E4    LD A,$FFE4       
+05C1: C5 E6    LD A,$FFE6    
+05C3: CD C4    ST A,$FFC4    
+05C5: C5 E4    LD A,$FFE4    
 05C7: E4 07    XOR A,=07     
-05C9: 7C 04    BNZ $05CF      
-05CB: C4 F3    LD A,=F3      
-05CD: CD C7    ST A,$FFC7       
+05C9: 7C 04    BNZ $05CF     
+05CB: C4 F3    LD A,=F3      ; LOAD 7SSG SYMBOL "E." (ERGEBNIS/RESULT)
+05CD: CD C7    ST A,$FFC7    ; STORE IN DIGIT 7
 05CF: 10       CALL 0        ; CALL ANZ_EIN
 05D0: 74 B1    BRA $0583     ; RETURNS HERE: FUNCTION KEY PRESSED
 05D2: 01       XCH A,E       ; RETURNS HERE: FUNCTION KEY PRESSED
-05D3: C5 E4    LD A,$FFE4       
+05D3: C5 E4    LD A,$FFE4    
 05D5: E4 07    XOR A,=07     
-05D7: 6C 0C    BZ $05E5       
+05D7: 6C 0C    BZ $05E5      
 05D9: E4 03    XOR A,=03     
-05DB: 6C 08    BZ $05E5       
-05DD: C5 E4    LD A,$FFE4       
-05DF: CD E5    ST A,$FFE5       
-05E1: C5 E6    LD A,$FFE6       
-05E3: CD E7    ST A,$FFE7       
+05DB: 6C 08    BZ $05E5      
+05DD: C5 E4    LD A,$FFE4    
+05DF: CD E5    ST A,$FFE5    
+05E1: C5 E6    LD A,$FFE6    
+05E3: CD E7    ST A,$FFE7    
 05E5: C4 00    LD A,=00      
-05E7: CD E6    ST A,$FFE6       
+05E7: CD E6    ST A,$FFE6    
 05E9: 01       XCH A,E       
-05EA: 20 BF 09 JSR $09C0      
-05ED: 74 94    BRA $0583      
-05EF: C5 E5    LD A,$FFE5       
+05EA: 20 BF 09 JSR $09C0     
+05ED: 74 94    BRA $0583     
+05EF: C5 E5    LD A,$FFE5    
 05F1: E4 02    XOR A,=02     
-05F3: 6C 29    BZ $061E       
+05F3: 6C 29    BZ $061E      
 05F5: E4 01    XOR A,=01     
-05F7: 6C 2B    BZ $0624       
-05F9: 85 D8    LD EA,$FFD8      
+05F7: 6C 2B    BZ $0624      
+05F9: 85 D8    LD EA,$FFD8   
 05FB: 1B       CALL B        ; CALL DEZ_HEX
 05FC: 09       LD T,EA       
-05FD: C5 E5    LD A,$FFE5       
+05FD: C5 E5    LD A,$FFE5    
 05FF: E4 05    XOR A,=05     
-0601: 6C 0D    BZ $0610       
-0603: 85 E2    LD EA,$FFE2      
+0601: 6C 0D    BZ $0610      
+0603: 85 E2    LD EA,$FFE2   
 0605: 2C       MPY EA,T      
 0606: 58       OR A,E        
-0607: 6C 01    BZ $060A       
+0607: 6C 01    BZ $060A      
 0609: 1A       CALL A        ; CALL FEHLER/ERROR
 060A: 0B       LD EA,T       
 060B: 1C       CALL C        ; CALL HEX_DEC
-060C: 8D D8    ST EA,$FFD8      
-060E: 74 06    BRA $0616      
-0610: 85 E2    LD EA,$FFE2      
+060C: 8D D8    ST EA,$FFD8   
+060E: 74 06    BRA $0616     
+0610: 85 E2    LD EA,$FFE2   
 0612: 0D       DIV EA,T      
 0613: 1C       CALL C        ; CALL HEX_DEC
-0614: 8D D8    ST EA,$FFD8      
-0616: C5 E6    LD A,$FFE6       
-0618: E5 E7    XOR A,$FFE7      
-061A: CD E6    ST A,$FFE6       
-061C: 74 35    BRA $0653      
-061E: C5 E6    LD A,$FFE6       
+0614: 8D D8    ST EA,$FFD8   
+0616: C5 E6    LD A,$FFE6    
+0618: E5 E7    XOR A,$FFE7   
+061A: CD E6    ST A,$FFE6    
+061C: 74 35    BRA $0653     
+061E: C5 E6    LD A,$FFE6    
 0620: E4 80    XOR A,=80     
-0622: CD E6    ST A,$FFE6       
-0624: C5 E6    LD A,$FFE6       
-0626: E5 E7    XOR A,$FFE7      
-0628: 7C 0A    BNZ $0634      
-062A: 85 D8    LD EA,$FFD8      
+0622: CD E6    ST A,$FFE6    
+0624: C5 E6    LD A,$FFE6    
+0626: E5 E7    XOR A,$FFE7   
+0628: 7C 0A    BNZ $0634     
+062A: 85 D8    LD EA,$FFD8   
 062C: 1B       CALL B        ; CALL DEZ_HEX
-062D: B5 E2    ADD EA,$FFE2     
+062D: B5 E2    ADD EA,$FFE2  
 062F: 1C       CALL C        ; CALL HEX_DEC
-0630: 8D D8    ST EA,$FFD8      
-0632: 74 1F    BRA $0653      
-0634: 85 D8    LD EA,$FFD8      
+0630: 8D D8    ST EA,$FFD8   
+0632: 74 1F    BRA $0653     
+0634: 85 D8    LD EA,$FFD8   
 0636: 1B       CALL B        ; CALL DEZ_HEX
-0637: BD E2    SUB EA,$FFE2     
-0639: 8D D8    ST EA,$FFD8      
+0637: BD E2    SUB EA,$FFE2  
+0639: 8D D8    ST EA,$FFD8   
 063B: 06       LD A,S        
 063C: D4 80    AND A,=80     
-063E: 6C 07    BZ $0647       
-0640: 85 D8    LD EA,$FFD8      
+063E: 6C 07    BZ $0647      
+0640: 85 D8    LD EA,$FFD8   
 0642: 1C       CALL C        ; CALL HEX_DEC
-0643: 8D D8    ST EA,$FFD8      
-0645: 74 0C    BRA $0653      
+0643: 8D D8    ST EA,$FFD8   
+0645: 74 0C    BRA $0653     
 0647: 84 00 00 LD EA,=0000   
-064A: BD D8    SUB EA,$FFD8     
+064A: BD D8    SUB EA,$FFD8  
 064C: 1C       CALL C        ; CALL HEX_DEC
-064D: 8D D8    ST EA,$FFD8      
-064F: C5 E7    LD A,$FFE7       
-0651: CD E6    ST A,$FFE6       
+064D: 8D D8    ST EA,$FFD8   
+064F: C5 E7    LD A,$FFE7    
+0651: CD E6    ST A,$FFE6    
 0653: C4 00    LD A,=00      
-0655: CD E5    ST A,$FFE5       
-0657: CD E7    ST A,$FFE7       
-0659: 85 D8    LD EA,$FFD8      
+0655: CD E5    ST A,$FFE5    
+0657: CD E7    ST A,$FFE7    
+0659: 85 D8    LD EA,$FFD8   
 065B: 58       OR A,E        
-065C: 7C 04    BNZ $0662      
+065C: 7C 04    BNZ $0662     
 065E: C4 00    LD A,=00      
-0660: CD E6    ST A,$FFE6       
+0660: CD E6    ST A,$FFE6    
 0662: 24 BA 05 JMP $05BB    
-  
+
 0665: E4 01    XOR A,=01     ; A=? (A^)
 0667: 6C 03    BZ $066C      ; BRANCH WHEN TRUE
 0669: 24 04 0A JMP $0A05     ; JUMP OTHERWISE
 
                              ; PROGRAM B: REACTION TEST
 066C: 12       CALL 2        ; CALL BLANK
-066D: 8D E3    ST EA,$FFE3      
-066F: 8D E6    ST EA,$FFE6      
-0671: C5 D3    LD A,$FFD3       
-0673: CD E0    ST A,$FFE0       
-0675: 20 CE 06 JSR $06CF      
-0678: CD E1    ST A,$FFE1       
-067A: 85 E3    LD EA,$FFE3      
+066D: 8D E3    ST EA,$FFE3   
+066F: 8D E6    ST EA,$FFE6   
+0671: C5 D3    LD A,$FFD3    
+0673: CD E0    ST A,$FFE0    
+0675: 20 CE 06 JSR $06CF     
+0678: CD E1    ST A,$FFE1    
+067A: 85 E3    LD EA,$FFE3   
 067C: 1C       CALL C        ; CALL HEX_DEC
-067D: CD D8    ST A,$FFD8       
+067D: CD D8    ST A,$FFD8    
 067F: 15       CALL 5        ; CALL UEB_2
 0680: C4 08    LD A,=08      
 0682: 11       CALL 1        ; CALL ANZEIGE
-0683: C5 C2    LD A,$FFC2       
-0685: 7C F3    BNZ $067A      
-0687: 9D E1    DLD A,$FFE1      
-0689: 7C EF    BNZ $067A      
+0683: C5 C2    LD A,$FFC2    
+0685: 7C F3    BNZ $067A     
+0687: 9D E1    DLD A,$FFE1   
+0689: 7C EF    BNZ $067A     
 068B: 26 00 FD LD P2,=FD00   
-068E: 20 CE 06 JSR $06CF      
+068E: 20 CE 06 JSR $06CF     
 0691: D4 0F    AND A,=0F     
 0693: CD E5    ST A,$FFE5    
 0695: 84 DE 00 LD EA,=00DE   ; LOAD 7SEGMENT-SYMBOL TABLE OFFSET
-0698: B5 E5    ADD EA,$FFE5     
+0698: B5 E5    ADD EA,$FFE5  
 069A: 4F       XCH EA,P3     
 069B: C3 00    LD A,00,P3    
 069D: CA 10    ST A,10,P2    
@@ -1155,7 +1158,8 @@
 07AC: 7C DD    BNZ 078B      
 07AE: 40       LD A,E        
 07AF: 5C       RET        
-   
+
+; GENERATE CASSETTE OUTPUT
 07B0: 3B 04    OR S,=04      ; SET F2 OUTPUT=1
 07B2: C4 0F    LD A,=0F      ; DELAY VALUE
 07B4: 20 55 08 JSR $0856     ; NANOSLEEP
@@ -1241,7 +1245,7 @@
 0845: 5C       RET           
 
 0846: C4 08    LD A,=08      
-0848: CB FF    ST A,$FF,P3    
+0848: CB FF    ST A,$FF,P3   
 084A: C4 00    LD A,=00      
 084C: 48       LD E,A        
 084D: 20 1F 08 JSR 0820      
@@ -1406,9 +1410,9 @@
 093F: 20 67 09 JSR $0968     ; SAVE CPU REGISTERS TO RAM
 0942: 3A       POP EA        
 0943: B4 01 00 ADD EA,=0001  
-0946: 8D C8    ST EA,C8      
-0948: 85 D3    LD EA,D3      
-094A: CD D8    ST A,D8       
+0946: 8D C8    ST EA,$FFC8   
+0948: 85 D3    LD EA,$FFD3   
+094A: CD D8    ST A,$FFD8    
 094C: 12       CALL 2        ; CALL BLANK
 094D: 15       CALL 5        ; CALL UEB_2
 094E: 10       CALL 0        ; CALL ANZ_EIN
@@ -1449,6 +1453,9 @@
 0982: 5C       RET           ; RETURN
 
 ; CALL 3 ENTRY: UEB_4R
+; CONVERTS DATA FROM $FFD8/$FFD9 TO DECIMAL
+; AND OUTPUTS TO THE 4 RIGHT MOST DIGITS.
+; THE 4 DIGITS TO THE LEFT ARE BLANKED.
 0983: 14       CALL 4        ; CALL UEB_4L
 0984: 85 C6    LD EA,$FFC6   
 0986: 8D C2    ST EA,$FFC2   
@@ -1471,16 +1478,16 @@
 
 ; CALL 6 ENTRY: EIN_2ST
 09A9: 84 00 00 LD EA,=0000   
-09AC: 8D D8    ST EA,$FFD8   
-09AE: CD DB    ST A,$FFDB    
+09AC: 8D D8    ST EA,$FFD8   ; CLEAR FFD8/FFD9
+09AE: CD DB    ST A,$FFDB    ; CLEAR FFDB
 09B0: 13       CALL 3        ; UEB_4R
-09B1: 10       CALL 0        ; CALL ANZ_EIN: SKIPS
+09B1: 10       CALL 0        ; CALL ANZ_EIN
 09B2: 5C       RET           ; RETURN WHEN FUNCTION KEY PRESSED
 09B3: 00       NOP           ; FILL BYTE; SINCE CALL 0 SKIPS 2 BYTE
 09B4: 20 ED 00 JSR $00EE     ; CALL RETURNS HERE WHEN ALPHANUM ENTRY
-09B7: C4 00    LD A,=00      
-09B9: CD D9    ST A,$FFD9    
-09BB: 74 F3    BRA $09B0     
+09B7: C4 00    LD A,=00      ;
+09B9: CD D9    ST A,$FFD9    ; CLEAR FFD9 WHEN ALPHANUM KEY RECEIVED
+09BB: 74 F3    BRA $09B0     ; READ NEXT KEY
 
 ; CALL 7 ENTRY: EIN_4ST
 09BD: 84 00 00 LD EA,=0000   
@@ -1553,7 +1560,7 @@
 0A05: E4 05    XOR A,=05     ; A=? (A^)
 0A07: 7C 0F    BNZ $0A18     ; BRANCH OTHERWISE
 
-0A09: 20 AF 07 JSR $07B0     ; PROGRAM C?
+0A09: 20 AF 07 JSR $07B0     ; PROGRAM D
 0A0C: C4 60    LD A,=60      ; DELAY VALUE=60
 0A0E: 20 55 08 JSR $0856     ; NANOSLEEP
 0A11: 06       LD A,S        ; A<-S
@@ -1566,7 +1573,7 @@
 0A1C: 24 79 03 JMP $037A     ; JUMP OTHERWISE, READ KEY
 
 0A1F: C4 0C    LD A,=0C      ; PROGRAM D?
-0A21: CD E0    ST A,E0       
+0A21: CD E0    ST A,$FFE0    
 0A23: 06       LD A,S        
 0A24: 3B 04    OR S,=04      
 0A26: 39 F3    AND S,=F3     
@@ -1578,9 +1585,9 @@
 0A32: 3B 02    OR S,=02      
 0A34: 39 FC    AND S,=FC     
 0A36: D4 20    AND A,=20     
-0A38: 6C 06    BZ $0A40       
-0A3A: 9D E0    DLD A,E0      
-0A3C: 7C F3    BNZ $0A31      
+0A38: 6C 06    BZ $0A40      
+0A3A: 9D E0    DLD A,$FFE0   
+0A3C: 7C F3    BNZ $0A31     
 0A3E: 74 DF    BRA $0A1F     
 0A40: 06       LD A,S        ; CHECK INPUT (CASSETTE SIGNAL)
 0A41: D4 20    AND A,=20     ; CHECK SB INPUT
