@@ -54,10 +54,14 @@ Remember to hit the ON/OFF (0/1) button to start...
 * [The Virtual Philips MasterLab MC6400](https://thorstenbr.github.io/MasterLab-MC6400)
 * [My GitHUB project for the Virtual MC6400](https://github.com/ThorstenBr/MasterLab-MC6400)
 * [INS8070 Instruction Set Summary](http://norbert.old.no/papers/datasheet/INS8070InstructionSetSummary.pdf)
-* [Extensive Documentation (German)](http://norbert.old.no/extra/extra3.html)
-* [Original Manual (German)](http://ee.old.no/library/6400-MC-de.pdf)
-* [Video demonstrating the real hardware](https://www.youtube.com/watch?v=D79aGjK4ByY)
+* [YouTube Video demonstrating the real hardware](https://www.youtube.com/watch?v=D79aGjK4ByY)
 * [Photos of the kit](http://retro.hansotten.nl/electronic-kits-philips-and-more/philips-electronic-kits/microcomputerlab-ce6400/)
+
+In German:
+
+* [Extensive Documentation](http://norbert.old.no/extra/extra3.html) (German)
+* [Original Manual](http://ee.old.no/library/6400-MC-de.pdf) (very comprehensive but German)
+* [Magazine Article](https://www.classic-computing.de/wp-content/uploads/2024/10/load10web.pdf) (*Classic Computing "LOAD"* magazine, see page 72)
  
 ![MC6400 MasterLab](images/MC6400_MasterLab1.jpg)
 
