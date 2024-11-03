@@ -21,6 +21,8 @@ var GUI_INSTRUCTION  = gui("INSTRUCTION");
 var GUI_OPCODE       = gui("OPCODE");
 var GUI_MEMORY       = gui("MEMORY");
 var GUI_DISASSEMBLER = gui("DISASSEMBLER");
+var GUI_MEMADDRESS   = gui("ADDRESS");
+var GUI_DISADDRESS   = gui("DIS_ADDRESS");
 
 var MemViewerAddress    = -4; // -4=SP
 var DisassemblerAddress = -1; // -1=PC
@@ -271,7 +273,11 @@ function cpu_show()
 
 function memory_address_change(id)
 {
-	var v = parseAddress(gui("ADDRESS").value);
+	var o = GUI_MEMADDRESS.value;
+	var s = o.toUpperCase();
+	if (s != o)
+		GUI_MEMADDRESS.value = s;
+	var v = parseAddress(s);
 	if (!isNaN(v))
 		MemViewerAddress = v;
 	show_memory();
@@ -279,7 +285,11 @@ function memory_address_change(id)
 
 function disassembler_address_change(id)
 {
-	var v = parseAddress(gui("DIS_ADDRESS").value);
+	var o = GUI_DISADDRESS.value;
+	var s = o.toUpperCase();
+	if (s != o)
+		GUI_DISADDRESS.value = s;
+	var v = parseAddress(s);
 	if (!isNaN(v))
 		DisassemblerAddress = v;
 	show_disassembler();

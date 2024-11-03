@@ -342,7 +342,7 @@ function cpu_step()
 	if (!PowerState)
 		return;
 
-	// set input sensor in R_S
+	// set input sensors in R_S (SA or SB)
 	if (SensorsSet != 0)
 	{
 		R_S |= SensorsSet;
