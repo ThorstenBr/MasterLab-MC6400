@@ -12,20 +12,24 @@
 ; MC6400 BOARD HARDWARE
 ;
 ; WRITE REGISTERS:
-;   FD0x: Matrix selection bitmask.
-;         bit n: selects 7-segment #n for output
-;         bit n: also selects button matrix row #n for input
+;   FD0X: MATRIX SELECTION BITMASK.
+;         BIT N: SELECTS 7-SEGMENT #N FOR OUTPUT
+;         BIT N: ALSO SELECTS BUTTON MATRIX ROW #N FOR INPUT
 ; 
-;   FD1x: Writes segment/LED bitmask for selected segment
-; 
+;   FD1X: WRITES SEGMENT/LED BITMASK FOR SELECTED SEGMENT
+;
 ; READ REGISTERS:
-;   FD0x: Reads flags for selected button matrix row.
-;         bit 0: green alpha-numeric key 0-7 pressed
-;         bit 1: green alpha-numeric key 8..F pressed
-;         bit 2: blue function key pressed
-;         The button value depends on the selected row.
-;         For the alpha-numeric key the row number matches the natural
-;         button value (selected row 0..7 matches key 0..7 or 8..F).
+;   FD0X: READS FLAGS FOR SELECTED BUTTON MATRIX ROW.
+;           BIT 0: GREEN ALPHA-NUMERIC KEY 0-7 PRESSED
+;           BIT 1: GREEN ALPHA-NUMERIC KEY 8..F PRESSED
+;           BIT 2: BLUE FUNCTION KEY PRESSED
+;         TO DETERMINE THE BUTTON VALUE, CONSIDER THE SELECTED ROW.
+;         FOR THE ALPHA-NUMERIC KEY THE ROW NUMBER MATCHES THE NATURAL
+;         BUTTON VALUE (SELECTED ROW 0..7 MATCHES KEY 0..7 OR 8..F).
+;         FOR THE BLUE FUNCTION KEYS, THE ROW NUMBER MATCHES THE BUTTONS
+;         WHEN NUMBERED TOP TO BOTTOMM, LEFT COLUMN FIRST, SECOND
+;         COLUMN LAST:
+;         A-D=0, RUN=1, ME-=2, ME+=3, SV=4, LD=5, CPU=6, SP=7
 ;
 ; *********************************************************************
 
@@ -1577,10 +1581,10 @@
 0A38: 6C 06    BZ $0A40       
 0A3A: 9D E0    DLD A,E0      
 0A3C: 7C F3    BNZ $0A31      
-0A3E: 74 DF    BRA $0A1F      
-0A40: 06       LD A,S        
-0A41: D4 20    AND A,=20     
-0A43: 6C FB    BZ $0A40       
+0A3E: 74 DF    BRA $0A1F     
+0A40: 06       LD A,S        ; CHECK INPUT (CASSETTE SIGNAL)
+0A41: D4 20    AND A,=20     ; CHECK SB INPUT
+0A43: 6C FB    BZ $0A40      ; WAIT UNTIL SB HIGH
 0A45: 74 D8    BRA $0A1F      
 
 ; COPYRIGHT AND VERSION MESSAGE

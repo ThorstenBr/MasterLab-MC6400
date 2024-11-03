@@ -38,13 +38,17 @@ var MatrixBitmask = 0; // button and segment matrix selection bitmask
  * 
  * READ REGISTERS:
  *   FD0x: Reads flags for selected button matrix row.
- *         bit 0: green alpha-numeric key 0-7 pressed
- *         bit 1: green alpha-numeric key 8..F pressed
- *         bit 2: blue function key pressed
- *         The button value depends on the selected row.
+ *           bit 0: green alpha-numeric key 0-7 pressed
+ *           bit 1: green alpha-numeric key 8..F pressed
+ *           bit 2: blue function key pressed
+ *         To determine the button value, consider the selected row.
  *         For the alpha-numeric key the row number matches the natural
  *         button value (selected row 0..7 matches key 0..7 or 8..F).
- * 
+ *         For the blue function keys, the row number matches the
+ *         buttons when numbered top to bottomm, left column first,
+ *         second column last:
+ *         A-D=0, RUN=1, ME-=2, ME+=3, SV=4, LD=5, CPU=6, SP=7
+ *
  * ***********************************************/
 
 /* I/O write operation. Called from CPU emulator. */
@@ -235,47 +239,17 @@ function sensor_input(key, down)
 	//console.log("sensor_input: ", SensorsSet, SensorsCleared);
 }
 
-/* input of green/alphanumeric keys */
-function green_input(key, down)
+/* input handler for green alphanumeric and blue function keys */
+function button_matrix_input(key, down)
 {
-	var idx = key & 0x7;
-	var flag = (key>=8) ? 0x2 : 0x1; // alphanum key 0x2=8..F, 0x1=0..7
+	var idx  = key & 0x7;
+	var flag = key >> 4;
 
 	if (down)
 		ButtonMatrix[idx] |= flag;
 	else
 		ButtonMatrix[idx] &= 0xff ^ flag;
-	//console.log("alphanum: ", key, down, idx, ButtonMatrix[idx]);
-}
-
-/* input of blue function keys */
-function blue_button_press(key, down)
-{
-	var flag = 4; // function key
-	var idx = -1;
-
-	switch(key)
-	{
-		case 7:idx=7;break; // SP
-		case 0:idx=0;break; // A-D
-		case 6:idx=3;break; // ME+
-		case 4:idx=2;break; // ME-
-		case 5:idx=6;break; // CPU
-		case 2:idx=1;break; // RUN
-
-		case 3:idx=5;break; // LD
-		case 1:idx=4;break; // SV
-	}
-
-	// set clear bit in button matrix
-	if (idx != -1)
-	{
-		if (down)
-			ButtonMatrix[idx] |= flag;
-		else
-			ButtonMatrix[idx] &= 0xff ^ flag;
-	}
-	//console.log("blue: ", key, idx, down);
+	//console.log("button_matrix_input: ", key, down, idx, ButtonMatrix[idx]);
 }
 
 function green_button_init()
@@ -293,10 +267,11 @@ function green_button_init()
 		row_key -= 4;
 		for (let cell of row.cells)
 		{
-			cell.userdata = key;
+			var flag = (key>=8) ? 0x2 : 0x1; // alphanum key 0x2=8..F, 0x1=0..7
+			cell.userdata = (key&7) | (flag << 4);
+			cell.onmousedown = function() {button_matrix_input(cell.userdata, true);};
+			cell.onmouseup   = function() {button_matrix_input(cell.userdata, false);};
 			key++;
-			cell.onmousedown = function() {green_input(cell.userdata, 1);};
-			cell.onmouseup   = function() {green_input(cell.userdata, 0);};
 		}
 	}
 }
@@ -314,11 +289,13 @@ function blue_button_init()
 		if (skip)
 			continue;
 		var button_column = 0;
+		var flag = 4; // flag value when any function key is pressed
 		for (let cell of row.cells)
 		{
-			cell.userdata = button_row * 2 + button_column;
-			cell.onmousedown = function() {blue_button_press(cell.userdata, true); };
-			cell.onmouseup   = function() {blue_button_press(cell.userdata, false);};
+			// blue buttons are numbered top to bottom, left to right
+			cell.userdata = (button_row + button_column*4) | (flag << 4);
+			cell.onmousedown = function() {button_matrix_input(cell.userdata, true); };
+			cell.onmouseup   = function() {button_matrix_input(cell.userdata, false);};
 			button_column++;
 		}
 		button_row++;
