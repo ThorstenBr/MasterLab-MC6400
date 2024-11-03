@@ -1,0 +1,297 @@
+/* 
+ * Virtual Philips MicrocomputerLab MC6400 & National Semiconductor INS8070 emulator.
+ *
+ * Implemented with pure JavaScript+HTML+CSS.
+ * No fuss, no bloat.
+ * 
+ * https://github.com/ThorstenBr/MasterLab-MC6400
+ * 
+ * Copyright 2024 Thorsten Brehm, brehmt (at) gmail com
+ */
+body {
+	background: black;
+	color: white;
+	font-family: sans-serif;
+	background-image: url("../images/nasa_stars.jpg");
+}
+button {
+	width: 5em;
+	height: 3em;
+	font-weight: bold;
+}
+button:disabled {
+	opacity: 80%;
+}
+.smoothshadow {
+	box-shadow: rgba(255, 255, 255, 0.25) 0px 24px 25px, rgba(255, 255, 255, 0.12) 0px -12px 30px, rgba(255, 255, 255, 0.12) 0px 4px 6px, rgba(255, 255, 255, 0.17) 0px 12px 13px, rgba(255, 255, 255, 0.09) 0px -3px 5px;
+}
+table.IMAGES, table.IMAGES td {
+	padding: 10px;
+	box-shadow: none;
+	text-align: center;
+}
+table.IMAGES img {
+	max-height: 300px;
+}
+table.DEBUGGER td {
+	vertical-align: top;
+	text-align: left;
+}
+table.DOCUMENTATION {
+	background: silver;
+	font-family: sans-serif;
+	border-spacing: 0.5em 0.5em;
+	border-radius: 10px;
+	font-size: 1.5em;
+	color: black;
+}
+table.DOCUMENTATION > tbody > tr > td {
+	border: 0;
+	font-size: 0.8em;
+	text-align: left;
+	vertical-align: top;
+	padding: 5px 10px;
+}
+table.MC6400 {
+	background: silver;
+	font-family: sans-serif;
+	border-spacing: 0.5em 0.5em;
+	border-radius: 10px;
+	font-size: 1.5em;
+	user-select: none;
+}
+table.MC6400 td {
+	text-align: center;
+	color: black;
+}
+table.MC6400 > tbody > tr > td {
+	border: 2px solid;
+	border-color: black;
+	border-radius: 10px;
+	border-spacing: 10px;
+}
+tr.LOGO td {
+	border: 0 !important;
+	text-align: left !important;
+	font-weight: bold;
+}
+tr.LOGO td:nth-child(n+2) {
+	text-align: right !important;
+}
+tr.LOGO img {
+	height: 40px;
+	margin-right: 10px;
+}
+td.alphanum table tr:nth-child(even) td {
+	background: green;
+	border-color: green;
+	border: 1px solid;
+	height: 25px;
+	width: 50px;
+	border-radius: 13px;
+	cursor: pointer;
+	box-shadow: 2px 3px gray;
+}
+td.alphanum > table tr:nth-child(even) td:hover {
+	background: #30b030;
+	border-color: #30b030;
+}
+td.alphanum > table tr:nth-child(even) td:active {
+	box-shadow: none;
+}
+td.control > table tr:nth-child(even) td {
+	background: blue;
+	border-color: blue;
+	border: 1px solid;
+	height: 25px;
+	width: 50px;
+	border-radius: 13px;
+	cursor: pointer;
+	box-shadow: 2px 3px gray;
+}
+td.control > table tr:nth-child(even) td:hover {
+	background: #5050ff;
+	border-color: #5050ff;
+}
+td.control > table tr:nth-child(even) td:active {
+	box-shadow: none;
+}
+td.cpuio > table tr:nth-child(2n+6) td {
+	background: blue;
+	border-color: blue;
+	border: 1px solid;
+	height: 25px;
+	width: 50px;
+	border-radius: 13px;
+	cursor: pointer;
+	box-shadow: 2px 3px gray;
+}
+td.cpuio > table tr:nth-child(2n+6) td:hover {
+	background: #5050ff;
+	border-color: #5050ff;
+}
+td.cpuio > table tr:nth-child(2n+6) td:active {
+	box-shadow: none;
+}
+td.switches > table tr:nth-child(7) td {
+	background: #e00000;
+	border-color: #e00000;
+	border: 1px solid;
+	height: 25px;
+	width: 50px;
+	border-radius: 13px;
+	cursor: pointer;
+	box-shadow: 2px 3px gray;
+}
+td.switches > table tr:nth-child(7) td:hover {
+	background: #ff4040;
+	border-color: #ff4040;
+}
+td.switches > table tr:nth-child(7) td:active {
+	box-shadow: none;
+}
+table.CPU {
+	background: #ffe080;
+	padding: 5px;
+}
+table.CPU td:nth-child(1) {
+	color: blue;
+}
+table.CPU td#FLAGS {
+	color: red;
+}
+table.CPU td#CPU_CONTROL {
+	text-align: center;
+}
+table.MEMORY {
+	font-family: sans-serif;
+	background: #80e0ff;
+	padding: 5px;
+}
+table.DISASSEMBLER {
+	font-family: sans-serif;
+	background: #80ffe0;
+	padding: 5px;
+}
+table.CPU, table.MEMORY, table.DISASSEMBLER {
+	color: black;
+	font-size: 1.5em;
+	border-radius: 10px;
+	margin-right: 10px;
+}
+table.CPU th, table.MEMORY th, table.DISASSEMBLER th {
+ line-height: 0.8em;
+}
+table.CPU td {
+	vertical-align: top;
+	font-family: monospace, monospace;
+}
+table.leds {
+	border: 2px solid;
+	border-color: black;
+	border-radius: 10px;
+	border-spacing: 0px;
+}
+table.leds tr.led_row {
+	background-color: #e0e0e0;
+	border-radius: 8px;
+}
+input#ADDRESS, input#DIS_ADDRESS {
+	font-size: 1em;
+}
+td#MEMORY, td#DISASSEMBLER {
+	font-family: monospace, monospace;
+}
+.dot {
+	height: 0.8em;
+	width: 0.8em;
+	border-radius: 50%;
+	display: inline-block;
+}
+.dot.red {
+	background-color: #600000;
+}
+.dot.yellow {
+	background-color: #606000;
+}
+.dot.green {
+	background-color: #006000;
+}
+input:checked + .dot.red { background-color: red; }
+input:checked + .dot.yellow { background-color: yellow; }
+input:checked + .dot.green { background-color: #00ff00; }
+td.cpuio input {
+	display: none;
+}
+  
+/* box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 40px;
+}
+
+/* Hide default HTML checkbox */
+table.MC6400 input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #A05000;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 13px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 25px;
+  width: 50px;
+  left: 2px;
+  bottom: 2px;
+  background-color: darkorange;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 13px;
+}
+
+input:checked + .slider {
+  background-color: #A05000;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #A05000;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateY(-12px);
+  -ms-transform: translateY(-12px);
+  transform: translateY(-12px);
+}
+table.LINKS {
+	color: white;
+	font-weight: bold;
+	background-color: black;
+	border-radius: 20px;
+	padding: 10px;
+}
+table.LINKS th {
+	font-size: 2em;
+}
+a, a:visited, a:active {
+	color: red;
+	font-weight: bold;
+}
+a:hover {
+	color: yellow;
+}

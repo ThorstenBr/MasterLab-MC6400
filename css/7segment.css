@@ -1,0 +1,62 @@
+table.segmentarray {
+	background-color: darkgray;
+	border-radius: 10px;
+}
+
+td.segments {
+	border: 2px solid;
+	border-color: black;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.seg {
+  position: relative;
+}
+
+.segment {
+  height: 12px;
+  width: 3px;
+  background-color: #990000;
+  border-radius: 9999px;
+  box-shadow: 0px 0px 5px #990000;
+}
+
+.A {
+  position: absolute;
+  top: -34px;
+  left: 9px;
+  transform: rotate(90deg);
+}
+.B {
+  position: absolute;
+  top: -28px;
+  left: 16px;
+}
+.C {
+  position: absolute;
+  top: -15px;
+  left: 16px;
+}
+.D {
+  position: absolute;
+  top: -9px;
+  left: 9px;
+  transform: rotate(90deg);
+}
+.E {
+  position: absolute;
+  top: -15px;
+  left: 2px;
+}
+.F {
+  position: absolute;
+  top: -28px;
+  left: 2px;
+}
+.G {
+  position: absolute;
+  top: -22px;
+  left: 9px;
+  transform: rotate(90deg);
+}

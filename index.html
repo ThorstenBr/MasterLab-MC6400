@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<!--
+	Virtual Philips MicrocomputerLab MC6400 & National Semiconductor INS8070 emulator.
+
+	Implemented with pure JavaScript+HTML+CSS.
+	No fuss, no bloat.
+
+	https://github.com/ThorstenBr/MasterLab-MC6400
+
+	Copyright 2024 Thorsten Brehm, brehmt (at) gmail com
+ -->
+<title>MC6400</title>
+<link rel="stylesheet" href="css/mc6400.css">
+<link rel="stylesheet" href="css/7segment.css">
+<body>
+<center>
+
+<h1>Philips MicroComputerLab MC6400<br>Emulator/Virtual Hardware</h1>
+
+<!-- images -->
+
+<table class="LINKS smoothshadow" width="80%">
+	<tr>
+		<th>Introduction</th>
+	</tr>
+	<tr>
+		<td>
+			<center>
+			<table class="IMAGES">
+				<tr>
+					<td><img src="images/MC6400_MasterLab1.jpg"></td>
+					<td><img src="images/MC6400_MasterLab2.jpg"></td>
+				</tr>
+			</table>
+			</center>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			The Philips 6400 Microcomputer Master Lab, also named "MC6400", was introduced in 1983.
+			It is computer training and teaching device, integrated in the Philips electronics lab kit series.
+			The system was fully programmable through its alphanumeric keyboard.
+			It had a two inputs and three outputs to connect with electronics experiments based on the kit series.
+			The kit series was popular in Europe, mainly in the Netherlands and Germany.
+			<br>
+			<br>
+			The MC6400 was developed in Germany by Erhard Meyer, a teacher normally working at Hamburg's teacher training institute.
+			As to be expected from someone with a professional school teaching background,
+			it came with a very thorough training manual,
+			teaching the topic of computers, programming and electronics from the very bottom up.
+			Unlike the rest of the series, as far as known, the manual was not translated, and this kit was only sold in German.
+			<br>
+			<br>
+			The kit was produced and distributed by the <a href="https://en.wikipedia.org/wiki/Gama_Toys">Georg Adam Mangold GmbH (GAMA)</a>,
+			a German toy manufacturer, which had taken over the electronics kit business from Philips in the early 1980s.
+			Initially still selling under the "Philips" brand, as of 1985 GAMA switched the entire kit series to use their
+			own "Schuco" brand instead.
+			The MC6400 was not a great sales success. By the mid 1980s other computers, especially the C64, were already dominating,
+			leaving very little market share for dedicated computer training kits.
+			<br>
+			<br>
+			The device was based on the National Semiconductor CPU "INS8070".
+			It features an 8bit hardware interface, internal 16bit registers and runs at 4MHz.
+			The microcontroller had 64byte of internal RAM, an external 8bit data / 16bit address bus,
+			two input I/O ports and three output ports.
+			The MC6400 board came with 2KB of additional external RAM and 4KB of external ROM.
+			The INS8070 instruction set is similar to many other CPUs of the time - but does have a number of
+			unusual quirks (all jump target addresses off by 1, status register without a zero flag,
+			no dedicated instructions to manipulate flags and awkwardly complex
+			"<i>search in memory</i>" instruction).
+			<br>
+			<br>
+			The virtual MC6400 below is an (almost) fully functional hardware emulator.
+			It emulates the CPU and the default MC6400 board hardware with its displays and buttons.
+			<br>
+			<br>
+			The CPU status display, disassembler and memory viewer below were, of course, not available with the
+			original device.
+			<br>
+			<br>
+			<center>
+				<font size="+3" color="red">Hit the ON/OFF (0/1) button below to start!</font>
+			</center>
+		</td>
+	</tr>
+</table>
+<br>
+<br>
+
+<!-- documentation panels -->
+
+<table class="DOCUMENTATION smoothshadow">
+	<tr>
+		<td>
+			<b>Start/Programs</b><br>
+			- Main switch to <b>1</b><br>
+			- Display: HALLO<br>
+			- Press SP<br>
+			- Display: SPIELE<br>
+			- Select program 0 - B<br>
+			- Program shown on display<br>
+			- End program: press RS<br>
+			- New program: press SP
+		</td>
+		<td>
+			<b>Programs/Games</b><br>
+			0 = Marquee<br>
+			1 = Traffic Lights<br>
+			2 = Blinking Light<br>
+			3 = Running Lights (&rarr;LED)<br>
+			4 = Decimal-/Binary-Numbers (&rarr;LED)<br>
+			5 = Clock Seconds<br>
+			6 = Siren<br>
+			7 = Dice (&rarr;SB to dice)<br>
+			8 = Lottery (&rarr;SA to select)<br>
+			9 = Power of 2<br>
+			A = Calculator<br>
+			B = Reaction Test
+		</td>
+		<td>
+			<b>Programming</b><br>
+			- Main switch to <b>1</b><br>
+			- Display: HALLO<br>
+			- Press A&#x21d4;D<br>
+			- Enter RAM address: 1000<br>
+			- Press A&#x21d4;D<br>
+			- Enter data: 00-FF<br>
+			- Press ME+ for next address<br>
+			- Enter next data byte<br>
+			- Repeat<br>
+			- Press A&#x21d4;D<br>
+			- Enter start address<br>
+			- Press RUN
+		</td>
+		<td>
+			<b>Inspect CPU registers</b><br>
+			- Press CPU<br>
+			- Display: CPU?<br>
+			- Press 0 for PC<br>
+			- Press 1 for SP<br>
+			- Press 2 for P2<br>
+			- Press 3 for P3<br>
+			- Press 4 for T<br>
+			- Press 5 for S (flags)<br>
+			- Press 6 for A<br>
+			- Press 7 for E<br>
+			- Press 0-F to edit
+		</td>
+	</tr>
+</table>
+
+<br>
+<br>
+
+<!-- MC6400 hardware panel -->
+<table class="MC6400 smoothshadow">
+	<tr class="LOGO">
+		<td>PHILIPS</td>
+		<td colspan="3">&nbsp;</td>
+		<td><img height="40px" src="images/logo.png"></td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tr><td></td><td>SSA</td></tr>
+				<tr><td class="segments">
+					<table class="segmentarray"><tr>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit7">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit6">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit5">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit4">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit3">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit2">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit1">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<div class="seg" id="digit0">
+							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
+							</div>
+						</td>
+					</tr></table>
+				</td>
+					<td title="Toggle between 7-segment display and LED array for digit 3">
+					<label class="switch">
+						<input id="SSD_LED" type="checkbox" checked>
+						<span class="slider"></span>
+					</label>
+				</td></tr>
+				<tr><td></td><td>LED</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td>
+				<table class="leds">
+					<tr class="led_row">
+						<td><input id="LED7" type="checkbox"><span title="LED 7" class="dot red"></span></td>
+						<td><input id="LED6" type="checkbox"><span title="LED 6" class="dot red"></span></td>
+						<td><input id="LED5" type="checkbox"><span title="LED 5" class="dot red"></span></td>
+						<td><input id="LED4" type="checkbox"><span title="LED 4" class="dot red"></span></td>
+						<td>&nbsp;</td>
+						<td><input id="LED3" type="checkbox"><span title="LED 3" class="dot red"></span></td>
+						<td><input id="LED2" type="checkbox"><span title="LED 2" class="dot red"></span></td>
+						<td><input id="LED1" type="checkbox"><span title="LED 1" class="dot red"></span></td>
+						<td><input id="LED0" type="checkbox"><span title="LED 0" class="dot red"></span></td>
+					</tr>
+					<tr>
+						<td>7</td><td>6</td><td>5</td><td>4</td>
+						<td>&nbsp;</td>
+						<td>3</td><td>2</td><td>1</td><td>0</td>
+					</tr>
+				</table>
+				</td></tr>
+				<tr><td>&nbsp;</td></tr>
+			</table>
+		</td>
+		<td class="switches">
+			<table>
+				<tr><td>0</td></tr>
+				<tr><td title="power on/off">
+					<label class="switch">
+						<input id="POWER" type="checkbox" checked>
+						<span class="slider"></span>
+					</label>
+				</td></tr>
+				<tr><td>1</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td>&nbsp;</td></tr>
+				<tr><td>RS</td></tr>
+				<tr><td id="RESET" title="CPU reset"></td></tr>
+			</table>
+		</td>
+		<td class="cpuio">
+			<table>
+				<tr><td>F3</td>
+				 <td><input id="F3" type="checkbox"><span title="output/status flag F3" class="dot red"></span></td></tr>
+				<tr><td>F2</td>
+				 <td><input id="F2" type="checkbox"><span title="output/status flag F2" class="dot yellow"></span></td></tr>
+				<tr><td>F1</td>
+				 <td><input id="F1" type="checkbox"><span title="output/status flag F1" class="dot green"></span></td></tr>
+				<tr><td colspan="2"></td></tr>
+				<tr><td colspan="2">SA</td></tr>	<tr><td colspan="2" id="SA" title="input: sensor A"></td></tr>
+				<tr><td colspan="2">SB</td></tr>	<tr><td colspan="2" id="SB" title="input: sensor B"></td></tr>
+			</table>
+		</td>
+		<td class="alphanum">
+			<table id="ALPHANUMKEYS">
+				<tr><td>C</td><td>D</td><td>E</td><td>F</td></tr>	<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td>8</td><td>9</td><td>A</td><td>B</td></tr>	<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td>4</td><td>5</td><td>6</td><td>7</td></tr>	<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td>0</td><td>1</td><td>2</td><td>3</td></tr>	<tr><td></td><td></td><td></td><td></td></tr>
+			</table>
+		</td>
+		<td class="control">
+			<table id="FUNCTIONKEYS">
+				<tr><td>A&#x21d4;D</td><td>SV</td></tr>	<tr><td title="address / data"></td><td title="save to tape"></td></tr>
+				<tr><td>RUN</td><td>LD</td></tr>	<tr><td></td><td title="load from tape"></td></tr>
+				<tr><td>ME-</td><td>CPU</td></tr>	<tr><td title="memory -"></td><td></td></tr>
+				<tr><td>ME+</td><td>SP</td></tr>	<tr><td title="memory +"></td><td title="select program"></td></tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<br>
+<br>
+
+
+<!-- CPU / debugging windows -->
+<table class="DEBUGGER"><tr><td>
+	<table class="CPU smoothshadow">
+		<tr><th colspan="2">CPU Status<font size="-1" color="gray"><i><br>National Semiconductor INS8070</i></font></th></tr>
+		<tr><td>EA:</td><td id="R_EA">0000</td></tr>
+		<tr><td>T:</td><td id="R_T">0000</td></tr>
+		<tr><td>S:</td><td id="R_S"></td></tr>
+		<tr><td>FLAGS:</td><td id="FLAGS"></td></tr>
+		<tr><td>PC:</td><td id="R_PC">0000</td></tr>
+		<tr><td>SP:</td><td id="R_SP">0000</td></tr>
+		<tr><td>P2:</td><td id="R_P2">0000</td></tr>
+		<tr><td>P3:</td><td id="R_P3">0000</td></tr>
+		<tr><td>CYCLES:</td><td id="CPU_CYCLES"></td></tr>
+		<tr><td>OPCODE:</td><td id="OPCODE"></td></tr>
+		<tr><td>INSTR:</td><td id="INSTRUCTION"></td></tr>
+		<tr><td id="CPU_CONTROL" colspan="2">
+			<button id="CPU_START" title="Launch the CPU execution">RUN</button>
+			<button id="CPU_HALT" title="Halt CPU execution">HALT</button>
+			<button id="CPU_STEP" title="CPU execution single step">STEP</button>
+		</td></tr>
+	</table>
+	</td>
+	<td>
+		<table class="DISASSEMBLER smoothshadow">
+			<tr><th colspan="2">Disassembler<font size="-1" color="gray"><i><br>ROM: 0000-0FFF, RAM: 1000-13FF.</i></font></th></tr>
+			<tr><th>Address:</th>
+				<td><input type="text" title="Enter address to disassemble or PC, P2, P3, SP, T or EA."
+					id="DIS_ADDRESS" name="DIS_ADDRESS" value="PC" maxlength="4" size="4"/></td>
+			</tr>
+			<tr><td id="DISASSEMBLER" colspan="2"></td></tr>
+		</table>
+	</td>
+	<td>
+		<table class="MEMORY smoothshadow">
+			<tr><th colspan="2">Memory Viewer<font size="-1" color="gray"><i><br>ROM: 0000-0FFF, RAM: 1000-13FF, iRAM/STACK: FFC0-FFFF.</i></font></th></tr>
+			<tr><th>Address:</th>
+				<td><input type="text" title="Enter memory address or PC, P2, P3, SP, T or EA."
+					id="ADDRESS" name="ADDRESS" value="SP" maxlength="4" size="4"/></td>
+			</tr>
+			<tr><td id="MEMORY" colspan="2"></td></tr>
+		</table>
+	</td>
+	</tr>
+</table>
+
+<br>
+<br>
+
+
+<br>
+
+<!-- internal logging/debugging panel -->
+<!--
+<table class="DISASSEMBLER"><tr>
+	<td id="log" style="font-family: mono;"></td>
+</tr></table>
+-->
+
+<table class="LINKS smoothshadow">
+	<tr>
+		<th colspan="2">Links</th>
+	</tr>
+	<tr>
+		<td>My GitHUB project:</td>
+		<td><a target="_blank" href="https://github.com/ThorstenBr/MasterLab-MC6400">https://github.com/ThorstenBr/MasterLab-MC6400</a></td>
+	</tr>
+	<tr>
+		<td>INS8070 Instruction Set Summary:</td>
+		<td><a target="_blank" href="http://norbert.old.no/papers/datasheet/INS8070InstructionSetSummary.pdf">http://norbert.old.no/papers/datasheet/INS8070InstructionSetSummary.pdf</a></td>
+	</tr>
+	<tr>
+		<td>Extensive Documentation (German):</td>
+		<td><a target="_blank" href="http://norbert.old.no/extra/extra3.html">http://norbert.old.no/extra/extra3.html</a></td>
+	</tr>
+	<tr>
+		<td>Original Manual (German):</td>
+		<td><a target="_blank" href="http://ee.old.no/library/6400-MC-de.pdf">http://ee.old.no/library/6400-MC-de.pdf</a></td>
+	</tr>
+	<tr>
+		<td>Video demonstrating the real hardware:</td>
+		<td><a target="_blank" href="https://www.youtube.com/watch?v=D79aGjK4ByY">https://www.youtube.com/watch?v=D79aGjK4ByY</a>
+	</tr>
+	<tr>
+		<td>Photos:</td>
+		<td><a href="http://retro.hansotten.nl/electronic-kits-philips-and-more/philips-electronic-kits/microcomputerlab-ce6400/">http://retro.hansotten.nl/electronic-kits-philips-and-more/philips-electronic-kits/microcomputerlab-ce6400/</a></td>
+	</tr>
+</table>
+
+</center>
+<br>
+<br>
+<hr>
+&copy; 2024 Thorsten Brehm. <a href="https://github.com/ThorstenBr/MasterLab-MC6400">https://github.com/ThorstenBr/MasterLab-MC6400</a>
+</body>
+
+<!-- Basic stuff -->
+<script type="text/javascript" src="js/utilities.js"></script>
+
+<!-- The INS8070 CPU emulation -->
+<script type="text/javascript" src="js/ins8070_instructionset.js"></script>
+<script type="text/javascript" src="js/ins8070.js"></script>
+<script type="text/javascript" src="js/ins8070_disassembler.js"></script>
+
+<!-- The MC6400 hardware emulation -->
+<script type="text/javascript" src="js/7segment.js"></script>
+<script type="text/javascript" src="js/mc6400_rom.js"></script>
+<script type="text/javascript" src="js/mc6400.js"></script>
+
+<!-- Tests --
+<script type="text/javascript" src="js/tests.js"></script>
+-- Tests -->
+
+</html>
