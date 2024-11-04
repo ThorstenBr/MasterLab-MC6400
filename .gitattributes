@@ -1,0 +1,25 @@
+# general rule
+* text=auto
+
+# source files
+*.css text
+*.js text
+*.html text
+*.asm text
+*.c text
+*.h text
+*.S text
+*.py text
+*.cmake text
+*.ld text
+*.mk text
+Makefile text
+
+# documentation files
+*.md text
+*.txt text
+
+# binary files
+*.png binary
+*.jpg binary
+*.bin binary

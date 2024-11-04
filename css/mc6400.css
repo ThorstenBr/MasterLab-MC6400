@@ -196,7 +196,7 @@ table.leds tr.led_row {
 	background-color: #e0e0e0;
 	border-radius: 8px;
 }
-input#ADDRESS, input#DIS_ADDRESS {
+input#ADDRESS, input#DIS_ADDRESS, input#BREAKPOINT {
 	font-size: 1em;
 }
 td#MEMORY, td#DISASSEMBLER {
@@ -217,9 +217,9 @@ td#MEMORY, td#DISASSEMBLER {
 .dot.green {
 	background-color: #006000;
 }
-input:checked + .dot.red { background-color: red; }
-input:checked + .dot.yellow { background-color: yellow; }
-input:checked + .dot.green { background-color: #00ff00; }
+input:checked + .dot.red { background-color: red;box-shadow: 0px 0px 5px red;}
+input:checked + .dot.yellow { background-color: yellow;box-shadow: 0px 0px 5px yellow;}
+input:checked + .dot.green { background-color: #00ff00;box-shadow: 0px 0px 5px #00ff00;}
 td.cpuio input {
 	display: none;
 }

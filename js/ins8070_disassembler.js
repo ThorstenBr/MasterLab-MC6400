@@ -23,6 +23,7 @@ var GUI_MEMORY       = gui("MEMORY");
 var GUI_DISASSEMBLER = gui("DISASSEMBLER");
 var GUI_MEMADDRESS   = gui("ADDRESS");
 var GUI_DISADDRESS   = gui("DIS_ADDRESS");
+var GUI_BPADDRESS    = gui("BREAKPOINT");
 
 var MemViewerAddress    = -4; // -4=SP
 var DisassemblerAddress = -1; // -1=PC
@@ -293,4 +294,31 @@ function disassembler_address_change(id)
 	if (!isNaN(v))
 		DisassemblerAddress = v;
 	show_disassembler();
+}
+
+/* set/update CPU breakpoint address */
+function breakpoint_address_change(id)
+{
+	var o = GUI_BPADDRESS.value;
+	var s = o.toUpperCase();
+	if (s != o)
+		GUI_BPADDRESS.value = s;
+	var v = Number("0x"+s);
+	if (isNaN(v))
+	{
+		// disable the breakpoint
+		GUI_BPADDRESS.value = "";
+		BreakPoint_PC = -1;
+	}
+	else
+	{
+		BreakPoint_PC = v;
+	}
+}
+
+function disassemler_init()
+{
+	GUI_MEMADDRESS.onchange = memory_address_change;
+	GUI_DISADDRESS.onchange = disassembler_address_change;
+	GUI_BPADDRESS.onchange  = breakpoint_address_change;
 }

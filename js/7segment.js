@@ -18,10 +18,10 @@ function clear_digits()
 		if (segment_state[d] != 0)
 		{
 			var Segments = segment_array[d];
-			for (var s=1;s<8;s++)
+			for (var s=0;s<8;s++)
 			{
 				if (segment_state[d] & (1<<s))
-					Segments[s-1].style.visibility = "hidden";
+					Segments[s].style.visibility = "hidden";
 			}
 			segment_state[d] = 0;
 		}
@@ -51,15 +51,15 @@ function show_7segment(digit, value)
 	else
 	{
 		var Segments = segment_array[digit];
-		for (var s=1;s<8;s++)
+		for (var s=0;s<8;s++)
 		{
 			var mask = (1<<s);
 			if ((value & mask) != (segment_state[digit] & mask))
 			{
 				if (value & mask)
-					Segments[s-1].style.visibility = "visible";
+					Segments[s].style.visibility = "visible";
 				else
-					Segments[s-1].style.visibility = "hidden";
+					Segments[s].style.visibility = "hidden";
 			}
 		}
 	}

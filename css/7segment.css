@@ -60,3 +60,9 @@ td.segments {
   left: 9px;
   transform: rotate(90deg);
 }
+.DP {
+  position: absolute;
+  top: -3px;
+  left: 20px;
+  height: 3px;
+}

@@ -305,6 +305,8 @@ function blue_button_init()
 /* MC6400 board hardware initialization */
 function mc6400_init()
 {
+	disassemler_init();
+
 	gui("RESET").onclick  = cpu_reset;
 
 	gui("SA").onmousedown = function() { sensor_input("SA", true);}
@@ -312,8 +314,6 @@ function mc6400_init()
 	gui("SA").onmouseup   = function() { sensor_input("SA", false);}
 	gui("SB").onmouseup   = function() { sensor_input("SB", false);}
 
-	gui("ADDRESS").onchange     = memory_address_change;
-	gui("DIS_ADDRESS").onchange = disassembler_address_change;
 	GUI_POWER.onchange          = power_toggle;
 	GUI_SSD_LED.onchange        = ssdled_toggle;
 

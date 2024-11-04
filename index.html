@@ -168,53 +168,53 @@
 					<table class="segmentarray"><tr>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit7">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit6">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit5">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit4">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit3">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit2">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit1">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<div class="seg" id="digit0">
-							<div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
+							<div class="segment DP"></div><div class="segment A"></div><div class="segment B"></div><div class="segment C"></div><div class="segment D"></div>
 							<div class="segment E"></div><div class="segment F"></div><div class="segment G"></div>
 							</div>
 						</td>
 					</tr></table>
 				</td>
-					<td title="Toggle between 7-segment display and LED array for digit 3">
+					<td title="Toggle digit 3 between 7-segment display and LED array">
 					<label class="switch">
 						<input id="SSD_LED" type="checkbox" checked>
 						<span class="slider"></span>
@@ -284,9 +284,9 @@
 		</td>
 		<td class="control">
 			<table id="FUNCTIONKEYS">
-				<tr><td>A&#x21d4;D</td><td>SV</td></tr>	<tr><td title="address / data"></td><td title="save to tape"></td></tr>
-				<tr><td>RUN</td><td>LD</td></tr>	<tr><td></td><td title="load from tape"></td></tr>
-				<tr><td>ME-</td><td>CPU</td></tr>	<tr><td title="memory -"></td><td></td></tr>
+				<tr><td>A&#x21d4;D</td><td>SV</td></tr>	<tr><td title="memory editor (address / data)"></td><td title="save to tape"></td></tr>
+				<tr><td>RUN</td><td>LD</td></tr>	<tr><td title="run program at current address"></td><td title="load from tape"></td></tr>
+				<tr><td>ME-</td><td>CPU</td></tr>	<tr><td title="memory -"></td><td title="inspect CPU registers"></td></tr>
 				<tr><td>ME+</td><td>SP</td></tr>	<tr><td title="memory +"></td><td title="select program"></td></tr>
 			</table>
 		</td>
@@ -317,6 +317,7 @@
 			<button id="CPU_HALT" title="Halt CPU execution">HALT</button>
 			<button id="CPU_STEP" title="CPU execution single step">STEP</button>
 		</td></tr>
+		<tr><td>BP:</td><td><input type="text" id="BREAKPOINT" title="enter address where to halt the CPU" placeholder="breakpoint" maxlength="4" size="10"></input></td></tr>
 	</table>
 	</td>
 	<td>
