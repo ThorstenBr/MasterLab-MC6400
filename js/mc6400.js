@@ -54,6 +54,7 @@ var MatrixBitmask = 0; // button and segment matrix selection bitmask
 /* I/O write operation. Called from CPU emulator. */
 function io_write(adr, value)
 {
+	value = w8(value);
 	if ((adr&0xFFF0) == 0xFD00)
 	{
 		// register
@@ -110,22 +111,24 @@ var LastDigitsClearedMs = 0;
 function cpu_go()
 {
 	var tMs = performance.now();
-	if (tMs - LastDigitsClearedMs > 200)
+	if (tMs - LastDigitsClearedMs > 10)
 	{
 		clear_digits();
 		LastDigitsClearedMs = tMs;
 	}
 
 	if ((!Halted)&&(PowerState))
-		cpu_run(300);
+		cpu_run(1000);
 
 	if ((Halted)||(!PowerState))
 	{
 		CpuTimer = null;
+		clear_digits();
+		clear_digits(3);
 		cpu_show();
 	}
 	else
-		CpuTimer = setTimeout(cpu_go, 2);
+		CpuTimer = setTimeout(cpu_go, 3);
 }
 
 /* Halt the CPU execution */
@@ -197,6 +200,7 @@ function change_power_state(state)
 		// memory/CPU state lost when power is off
 		memory_init(false);
 		cpu_reset();
+		clear_digits();
 	}
 	else
 	{
@@ -215,7 +219,7 @@ function power_toggle(id)
 function ssdled_toggle()
 {
 	led_selected = !GUI_SSD_LED.checked;
-	clear_digits();
+	clear_digits(3);
 }
 
 function sensor_input(key, down)
@@ -271,6 +275,14 @@ function green_button_init()
 			cell.userdata = (key&7) | (flag << 4);
 			cell.onmousedown = function() {button_matrix_input(cell.userdata, true);};
 			cell.onmouseup   = function() {button_matrix_input(cell.userdata, false);};
+
+			// touch events
+			cell.addEventListener("touchstart", (event) => {
+					button_matrix_input(cell.userdata, true);
+					event.preventDefault();}, false);
+			cell.addEventListener("touchend", (event) => {
+					button_matrix_input(cell.userdata, false);
+					event.preventDefault();}, false);
 			key++;
 		}
 	}
@@ -296,6 +308,15 @@ function blue_button_init()
 			cell.userdata = (button_row + button_column*4) | (flag << 4);
 			cell.onmousedown = function() {button_matrix_input(cell.userdata, true); };
 			cell.onmouseup   = function() {button_matrix_input(cell.userdata, false);};
+
+			// touch events
+			cell.addEventListener("touchstart", (event) => {
+					button_matrix_input(cell.userdata, true);
+					event.preventDefault();}, false);
+			cell.addEventListener("touchend", (event) => {
+					button_matrix_input(cell.userdata, false);
+					event.preventDefault();}, false);
+
 			button_column++;
 		}
 		button_row++;
@@ -314,8 +335,23 @@ function mc6400_init()
 	gui("SA").onmouseup   = function() { sensor_input("SA", false);}
 	gui("SB").onmouseup   = function() { sensor_input("SB", false);}
 
+	// touch events
+	gui("SA").addEventListener("touchstart", (event) => {
+					sensor_input("SA", true);
+					event.preventDefault();}, false);
+	gui("SA").addEventListener("touchend", (event) => {
+					sensor_input("SA", false);
+					event.preventDefault();}, false);
+	gui("SB").addEventListener("touchstart", (event) => {
+					sensor_input("SB", true);
+					event.preventDefault();}, false);
+	gui("SB").addEventListener("touchend", (event) => {
+					sensor_input("SB", false);
+					event.preventDefault();}, false);
+
 	GUI_POWER.onchange          = power_toggle;
 	GUI_SSD_LED.onchange        = ssdled_toggle;
+	ssdled_toggle();
 
 	BUTTON_CPU_START.onclick = cpu_start;
 	BUTTON_CPU_HALT.onclick  = cpu_halt;
@@ -328,7 +364,7 @@ function mc6400_init()
 	load_program(0x0, MC6400_ROM);
 
 	cpu_reset();
-	change_power_state(false);
+	power_toggle();
 }
 
 // initialize the board

@@ -19,7 +19,7 @@ teaching the topic of computers, programming and electronics from the very botto
 Unlike the rest of the series, as far as known, the manual was not translated, and this kit was only sold in German.
 <br>
 <br>
-The kit was produced and distributed by the [Georg Adam Mangold GmbH (GAMA)](https://en.wikipedia.org/wiki/Gama_Toys),
+The kit was produced and distributed by [GAMA (Georg Adam Mangold)](https://en.wikipedia.org/wiki/Gama_Toys),
 a German toy manufacturer, which had taken over the electronics kit business from Philips in the early 1980s.
 Initially still selling under the "Philips" brand, as of 1985 GAMA switched the entire kit series to use their
 own "Schuco" brand instead.

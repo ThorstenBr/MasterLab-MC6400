@@ -10,24 +10,43 @@ var led_selected  = false;
 var led_array     = [];
 var segment_array = [];
 var segment_state = [255,255,255,255,255,255,255,255];
+var segment_timeout = [0,0,0,0,0,0,0,0];
 
-function clear_digits()
+function clear_digits(num)
 {
+	if (num == 3)
+	{
+		var Segments = segment_array[num];
+		for (var s=0;s<8;s++)
+		{
+			Segments[s].style.visibility = "hidden";
+			led_array[s].checked = false;
+		}
+		segment_state[num] = 0;
+		return;
+	}
 	for (var d=0;d<8;d++)
 	{
-		if (segment_state[d] != 0)
+		if (segment_timeout[d] > 0)
 		{
-			var Segments = segment_array[d];
-			for (var s=0;s<8;s++)
-			{
-				if (segment_state[d] & (1<<s))
-					Segments[s].style.visibility = "hidden";
-			}
-			segment_state[d] = 0;
+			segment_timeout[d] -= 1;
 		}
-		for (var led=0;led<8;led++)
+		else
 		{
-			led_array[led].checked = false;
+			if (segment_state[d] != 0)
+			{
+				var Segments = segment_array[d];
+				for (var s=0;s<8;s++)
+				{
+					if (segment_state[d] & (1<<s))
+					{
+						Segments[s].style.visibility = "hidden";
+						if (d==3)
+							led_array[s].checked = false;
+					}
+				}
+				segment_state[d] = 0;
+			}
 		}
 	}
 }
@@ -35,7 +54,10 @@ function clear_digits()
 // show 7segment data: digit (0..7, left to right)
 function show_7segment(digit, value)
 {
-	if (segment_state[digit] == (segment_state[digit]|value))
+	if (value == 0)
+		return;
+	segment_timeout[digit] = 2;
+	if (value == segment_state[digit])
 		return;
 	if (led_selected && (digit==3))
 	{
@@ -56,10 +78,7 @@ function show_7segment(digit, value)
 			var mask = (1<<s);
 			if ((value & mask) != (segment_state[digit] & mask))
 			{
-				if (value & mask)
-					Segments[s].style.visibility = "visible";
-				else
-					Segments[s].style.visibility = "hidden";
+				Segments[s].style.visibility = (value & mask) ? "visible" : "hidden";
 			}
 		}
 	}

@@ -174,6 +174,7 @@ function cpu_reset()
 	R_PC = 0x1;
 	R_S  = 0x0;
 	R_SP = 0x0;
+	Cycles = 0x0;
 	cpu_show();
 }
 
