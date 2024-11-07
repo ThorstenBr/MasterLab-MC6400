@@ -89,12 +89,19 @@ function w16(v) { if (v<0) v+= 65536;return v & 0xffff; }
 function w8(v) { if (v<0) v+= 256;return v&0xff; }
 
 // memory read, 8bit
-function mr8(adr)
+function mr8(adr, CountCycles=true)
 {
 	adr = w16(adr);
-	if ((adr >= 0xffc0)||(adr < 0x1400))
+	if (adr >= 0xffc0)
+		return Memory[adr]; // internal read, no extra cycle
+
+	// everything else is external: requires one extra cycle for each access
+	if (CountCycles)
+		Cycles += 1;
+
+	if (adr<0x1400)
 		return Memory[adr];
-	else
+
 	if ((adr >= 0xFD00)&&(adr < 0xFDFF))
 	{
 		return io_read(adr);
@@ -108,21 +115,31 @@ function mr8(adr)
 
 // memory read, 8bit, integer/signed
 // used for relative/displacement offsets
-function mri8(adr)
+function mri8(adr, CountCycles=true)
 {
-	adr = w16(adr);
-	var v = Memory[adr];
+	var v = mr8(adr, CountCycles);
 	if (v<0x80)
 		return v;
 	return v-256;
 }
 
 // memory read, 16bit
-function mr16(adr) { return (Memory[(adr+1)&0xffff] << 8) | Memory[adr&0xffff]; }
+function mr16(adr, CountCycles=true)
+{
+	// external memory access requires an additional CPU cycle per byte
+	if ((adr < 0xffc0)&&(CountCycles))
+		Cycles += 2;
+
+	return (Memory[(adr+1)&0xffff] << 8) | Memory[adr&0xffff];
+}
 
 // memory write, 8 bit
-function mw8(adr,v)
+function mw8(adr,v, CountCycles=true)
 {
+	// external memory access requires an additional CPU cycle
+	if ((adr < 0xffc0)&&(CountCycles))
+		Cycles += 1;
+
 	if ((adr >= 0xffc0)||((adr>=0x1000)&&(adr < 0x1400))) // 2K external RAM, 64byte internal RAM
 		Memory[adr & 0xffff] = v & 0xff;
 	else
@@ -137,7 +154,7 @@ function mw8(adr,v)
 }
 
 // memory write, 16bit
-function mw16(adr,v) { mw8(adr,v);mw8(adr+1,v>>8); }
+function mw16(adr,v,CountCycles) { mw8(adr,v,CountCycles);mw8(adr+1,v>>8,CountCycles); }
 
 /* initialize memory.
  *  clear_rom: false = RAM only, true = entire address space. */
@@ -350,6 +367,7 @@ function cpu_step()
 		SensorsSet = 0;
 	}
 
+	Cycles += 1; // external instruction fetch
 	switch(Memory[R_PC])
 	{
 		case 0x06: // LD A,S 	06 	3 	  	implicit 	A:=(S)

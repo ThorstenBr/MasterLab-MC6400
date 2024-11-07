@@ -72,7 +72,7 @@ function getInstruction(adr, with_machine_code)
 {
 	if (!PowerState)
 		return InvalidInstruction;
-	var b = mr8(adr);
+	var b = mr8(adr, false);
 	var s = InstructionSet[b];
 	var mcode = hex8(b)+" ";
 	var IsInvalid = (s=="");
@@ -81,7 +81,7 @@ function getInstruction(adr, with_machine_code)
 	InstructionBytes = 1;
 	if (s.indexOf("YY") > 0)
 	{
-		var Addr = mr16(adr+1);
+		var Addr = mr16(adr+1,false);
 		mcode += hex8(Addr & 0xff)+" "+hex8(Addr >> 8)+" ";
 		/* The CPU has the funny quirk that JMP/JSR needs to specify target address-1.
 		 * We show the actual target address - not the byte encoded in machine code.
@@ -94,11 +94,11 @@ function getInstruction(adr, with_machine_code)
 	else
 	if (s.indexOf("XX") > 0)
 	{
-		mcode += hex8(mr8(adr+1))+" ";
+		mcode += hex8(mr8(adr+1,false))+" ";
 		if (s.startsWith("B")) // "B"ranch instruction?
 		{
 			// show negative relative addresses for branch instructions
-			var Addr = mri8(adr+1);
+			var Addr = mri8(adr+1,false);
 			if (s.indexOf(",") < 0)
 			{
 				// "normal" branch, relative to PC. Show absolute address instead.
@@ -115,12 +115,12 @@ function getInstruction(adr, with_machine_code)
 		if (s.endsWith(",XX"))
 		{
 			// direct addressing to $FFxx address range
-			var Addr = mr8(adr+1);
+			var Addr = mr8(adr+1,false);
 			s = s.replace("XX", "FF"+hex8(Addr));
 		}
 		else
 		{
-			var Addr = mr8(adr+1);
+			var Addr = mr8(adr+1,false);
 			s = s.replace("XX", hex8(Addr));
 		}
 		InstructionBytes = 2;
@@ -215,7 +215,7 @@ function show_memory()
 			Data += ".&nbsp;&nbsp;";
 		else
 		if ((Address < 0x1400)||(Address >= 0xFFC0))
-			Data += hex8(mr8(Address)) +"&nbsp;";
+			Data += hex8(mr8(Address,false)) +"&nbsp;";
 		else
 			Data += "--&nbsp;";
 
@@ -268,7 +268,7 @@ function cpu_show()
 		GUI_P2.innerHTML     = hex16(R_P2);
 		GUI_P3.innerHTML     = hex16(R_P3);
 		GUI_CYCLES.innerHTML = hex(Cycles);
-		GUI_OPCODE.innerHTML = hex8(mr8(R_PC));
+		GUI_OPCODE.innerHTML = hex8(mr8(R_PC,false));
 	}
 }
 
