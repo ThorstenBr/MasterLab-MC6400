@@ -1443,14 +1443,14 @@ function cpu_step()
 
 		case 0x24: // JMP XXYY 	24 YY XX 	8 	  	absolut 	PC:=XXYY
 			R_PC = mr16(R_PC+1);
-			Cycles += 8;
+			Cycles += 9;
 			break;
 			
 		case 0x20: // JSR XXYY 	20 YY XX 	15 	  	absolut 	(--(SP)):=(PC), PC:=XXYY
 			R_SP = w16(R_SP-2);
 			mw16(R_SP, R_PC+2);
 			R_PC = mr16(R_PC+1);
-			Cycles += 15;
+			Cycles += 16;
 			break;
 
 		case 0x5C: // RET 	5C 	10 	  	implicit 	PC:=((SP)++)
