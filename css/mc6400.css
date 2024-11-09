@@ -11,7 +11,7 @@
 body {
 	background: black;
 	color: white;
-	font-family: sans-serif;
+	font-family: sans-serif sans-serif;
 	background-image: url("../images/nasa_stars.jpg");
 }
 button {
@@ -39,7 +39,7 @@ table.DEBUGGER td {
 }
 table.DOCUMENTATION {
 	background: silver;
-	font-family: sans-serif;
+	font-family: sans-serif sans-serif;
 	border-spacing: 0.5em 0.5em;
 	border-radius: 10px;
 	font-size: 1.5em;
@@ -54,10 +54,11 @@ table.DOCUMENTATION > tbody > tr > td {
 }
 table.MC6400 {
 	background: silver;
-	font-family: sans-serif;
+	font-family: sans-serif sans-serif;
 	border-spacing: 0.5em 0.5em;
 	border-radius: 10px;
 	font-size: 1.5em;
+	white-space: nowrap;
 	user-select: none;
 }
 table.MC6400 td {
@@ -164,12 +165,12 @@ table.CPU td#CPU_CONTROL {
 	text-align: center;
 }
 table.MEMORY {
-	font-family: sans-serif;
+	font-family: sans-serif sans-serif;
 	background: #80e0ff;
 	padding: 5px;
 }
 table.DISASSEMBLER {
-	font-family: sans-serif;
+	font-family: sans-serif sans-serif;
 	background: #80ffe0;
 	padding: 5px;
 }
